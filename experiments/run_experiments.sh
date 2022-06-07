@@ -1,0 +1,10 @@
+#!/bin/bash
+python exp_all_baselines.py --dataset 'dde_ramp_loading_time_sol'
+python exp_all_baselines.py --dataset 'spiral_dde'
+python exp_all_baselines.py --dataset 'stiffvdp'
+python exp_all_baselines.py --dataset 'lotka_volterra_system_with_delay'
+python exp_all_baselines.py --dataset 'integro_de'
+python exp_all_baselines.py --dataset 'mackey_glass_dde_long_term_dep'
+python exp_all_baselines.py --dataset 'sine'
+python exp_all_baselines.py --dataset 'square'
+python exp_all_baselines.py --dataset 'sawtooth'
