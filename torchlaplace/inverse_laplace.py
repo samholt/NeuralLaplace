@@ -201,7 +201,7 @@ class FixedTablot(InverseLaplaceTransformAlgorithmBase):
     We implemented the Fixed Tablot method, which is simple to implement.
     However it suffers from not being able to model solutions that have large sinusoidal components and instead is optimized for modelling decaying exponential solutions.
     We note that whilst it can approximate some small sinusoidal components, for an adaptive time contour, the sinusoidal components that can be represented decrease when
-     modelling longer time trajectories, and in the limit for long time horizons, allow only representations of decaying exponentials.
+    modelling longer time trajectories, and in the limit for long time horizons, allow only representations of decaying exponentials.
 
     .. note::
         References: Abate, J. and Valko, P. P. Multi-precision laplace transform inversion. International Journal for Numerical Methods in Engineering, 60:979–993, 2004.
