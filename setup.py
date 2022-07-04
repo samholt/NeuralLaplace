@@ -9,11 +9,7 @@ def read(fname: str) -> str:
 
 def find_version() -> str:
     version_file = read("torchlaplace/__init__.py")
-    version_re = r"__version__ = \"(?P<version>.+)\""
-    version_raw = re.match(version_re, version_file)
-
-    if version_raw is None:
-        return "0.0.1"
+    version_raw = version_file.split('__version__')[1].split('"')[1]
 
     version = version_raw.group("version")
     return version
