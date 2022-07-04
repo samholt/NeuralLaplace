@@ -1,13 +1,13 @@
 # Configuration file for the Sphinx documentation builder.
 
 # -- Project information
-
+import torchlaplace
 project = 'TorchLaplace'
 copyright = '2021, Sam Holt'
 author = 'Sam Holt'
 
-release = '0.1'
-version = '0.1.0'
+version = torchlaplace.__version__
+release = version
 
 # -- General configuration
 
