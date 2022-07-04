@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API &mdash; TorchLaplace 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" type="text/css" />
+      <link rel="stylesheet" href="_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css" type="text/css" />
+      <link rel="stylesheet" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" type="text/css" />
+      <link rel="stylesheet" href="_static/torchlaplace.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Developer Documentation" href="develop.html" />
+    <link rel="prev" title="User Guide Inverse Laplace Transform Algorithms" href="notebooks/user_ilt.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> TorchLaplace
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/user_core.html">User Guide Laplace Reconstruct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/user_ilt.html">User Guide Inverse Laplace Transform Algorithms</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-torchlaplace">Core Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#laplace-reconstruct">laplace_reconstruct</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#inverse-laplace-transform-algorithms">Inverse Laplace transform algorithms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inverselaplacetransformalgorithmbase">InverseLaplaceTransformAlgorithmBase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fourier">Fourier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dehoog">DeHoog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fixedtablot">FixedTablot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stehfest">Stehfest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cme">CME</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-torchlaplace.transformations">Transformation Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#complex-to-spherical-riemann">complex_to_spherical_riemann</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spherical-riemann-to-complex">spherical_riemann_to_complex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spherical-to-complex">spherical_to_complex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#complex-to-spherical">complex_to_spherical</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Developer Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TorchLaplace</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="api">
+<span id="torchlaplace-api"></span><h1>API<a class="headerlink" href="#api" title="Permalink to this headline"></a></h1>
+<section id="module-torchlaplace">
+<span id="core-functions"></span><h2>Core Functions<a class="headerlink" href="#module-torchlaplace" title="Permalink to this headline"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torchlaplace.laplace_reconstruct" title="torchlaplace.laplace_reconstruct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplace_reconstruct</span></code></a>(laplace_rep_func, p, t)</p></td>
+<td><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a system of Laplace representations.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="laplace-reconstruct">
+<h3>laplace_reconstruct<a class="headerlink" href="#laplace-reconstruct" title="Permalink to this headline"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="torchlaplace.laplace_reconstruct">
+<span class="sig-prename descclassname"><span class="pre">torchlaplace.</span></span><span class="sig-name descname"><span class="pre">laplace_reconstruct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">laplace_rep_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recon_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ilt_algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fourier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sphere_projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ilt_reconstruction_terms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">33</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#torchlaplace.laplace_reconstruct" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a system of Laplace representations.</p>
+<p>Given a parameterized Laplace representation functional <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{p},\mathbf{s})\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+    \mathbf{x}(t) &amp; = \text{inverse_laplace_transform}(\mathbf{F}(\mathbf{p},\mathbf{s}), t)
+\end{aligned}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> is a Tensor encoding the initial system state as a latent variable, and <span class="math notranslate nohighlight">\(t\)</span> is the time points to reconstruct trajectories for.</p>
+<p>The parameterized Laplace representation functional <code class="xref py py-attr docutils literal notranslate"><span class="pre">laplace_rep_func</span></code>, <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{p},\mathbf{s})\)</span> also takes an input complex value <span class="math notranslate nohighlight">\(\mathbf{s}\)</span>.
+This <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> is used internally when reconstructing a specified time point with the selected inverse Laplace transform algorithm <code class="xref py py-attr docutils literal notranslate"><span class="pre">ilt_algorithm</span></code>.</p>
+<p>Output dtypes and numerical precision are based on the dtypes of the inputs <code class="xref py py-attr docutils literal notranslate"><span class="pre">p</span></code>.</p>
+<p>The reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> are of shape <span class="math notranslate nohighlight">\((\text{MiniBatchSize}, \text{SeqLen}, d_{\text{obs}})\)</span>. Where <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the input evaluated time points <span class="math notranslate nohighlight">\(t\)</span>, and <span class="math notranslate nohighlight">\(d_{\text{obs}}\)</span> is the trajectory dimension for a given time point, <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>laplace_rep_func</strong> (<em>nn.Module</em>) – Function that maps an input of two tensors, first a scalar Tensor <cite>p</cite> encoding the initial system state and secondly a complex Tensor <cite>s</cite> used to evaluate the Laplace representation.</p></li>
+<li><p><strong>p</strong> (<em>Tensor</em>) – latent variable Tensor of shape <span class="math notranslate nohighlight">\((\text{MiniBatchSize}, \text{K})\)</span>. Where <span class="math notranslate nohighlight">\(\text{K}\)</span> is a hyperparameter, and can be set by the user to their desired value.</p></li>
+<li><p><strong>t</strong> (<em>Tensor</em>) – time points to reconstruct trajectories for of shape <span class="math notranslate nohighlight">\((\text{MiniBatchSize}, \text{SeqLen})\)</span> or <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span> if all trajectories use the same time points.</p></li>
+<li><p><strong>recon_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – trajectory dimension for a given time point. Corresponds to dim <span class="math notranslate nohighlight">\(d_{\text{obs}}\)</span>. If not explicitly specified, will use the same last dimension of <cite>p</cite>, i.e. <span class="math notranslate nohighlight">\(\text{K}\)</span>.</p></li>
+<li><p><strong>ilt_algorithm</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – inverse Laplace transform algorithm to use. Default: <code class="docutils literal notranslate"><span class="pre">fourier</span></code>. Available are {<code class="docutils literal notranslate"><span class="pre">fourier</span></code>, <code class="docutils literal notranslate"><span class="pre">dehoog</span></code>, <code class="docutils literal notranslate"><span class="pre">cme</span></code>, <code class="docutils literal notranslate"><span class="pre">fixed_tablot</span></code>, <code class="docutils literal notranslate"><span class="pre">stehfest</span></code>}. See inverse_laplace.py for further details.</p></li>
+<li><p><strong>use_sphere_projection</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – this uses the <cite>laplace_rep_func</cite> in the stereographic projection of the Riemann sphere. Default <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>laplace_rep_func</cite> to reconstruct a single time point.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{MiniBatchSize}, \text{SeqLen}, d_{\text{obs}})\)</span> or if no mini batch of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – if an invalid <cite>ilt_algorithm</cite> is provided.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="inverse-laplace-transform-algorithms">
+<h2>Inverse Laplace transform algorithms<a class="headerlink" href="#inverse-laplace-transform-algorithms" title="Permalink to this headline"></a></h2>
+<p>Each Inverse Laplace transform algorithm is a class that has a unified API, of three default parameters of <cite>ilt_reconstruction_terms</cite> (int, default of 33), <cite>torch_float_datatype</cite> (default of torch.float32) and  <cite>torch_complex_datatype</cite> (default of torch.cfloat). Note to use double precision use <cite>torch_float_datatype=torch.double</cite> and <cite>torch_complex_datatype=torch.cdouble</cite>.</p>
+<span class="target" id="module-torchlaplace.inverse_laplace"></span><table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase" title="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InverseLaplaceTransformAlgorithmBase</span></code></a>([...])</p></td>
+<td><p>Base class for Inverse Laplace Transform (ILT) Algorithms.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torchlaplace.inverse_laplace.Fourier" title="torchlaplace.inverse_laplace.Fourier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Fourier</span></code></a>([ilt_reconstruction_terms, alpha, ...])</p></td>
+<td><p>Inherits from <a class="reference internal" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase" title="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase()</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torchlaplace.inverse_laplace.DeHoog" title="torchlaplace.inverse_laplace.DeHoog"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeHoog</span></code></a>([ilt_reconstruction_terms, alpha, ...])</p></td>
+<td><p>Inherits from <a class="reference internal" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase" title="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase()</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torchlaplace.inverse_laplace.FixedTablot" title="torchlaplace.inverse_laplace.FixedTablot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FixedTablot</span></code></a>([ilt_reconstruction_terms, ...])</p></td>
+<td><p>Inherits from <a class="reference internal" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase" title="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase()</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torchlaplace.inverse_laplace.Stehfest" title="torchlaplace.inverse_laplace.Stehfest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Stehfest</span></code></a>([ilt_reconstruction_terms, ...])</p></td>
+<td><p>Inherits from <a class="reference internal" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase" title="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase()</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torchlaplace.inverse_laplace.CME" title="torchlaplace.inverse_laplace.CME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CME</span></code></a>([ilt_reconstruction_terms, ...])</p></td>
+<td><p>Inherits from <a class="reference internal" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase" title="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase()</span></code></a>.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="inverselaplacetransformalgorithmbase">
+<h3>InverseLaplaceTransformAlgorithmBase<a class="headerlink" href="#inverselaplacetransformalgorithmbase" title="Permalink to this headline"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torchlaplace.inverse_laplace.</span></span><span class="sig-name descname"><span class="pre">InverseLaplaceTransformAlgorithmBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ilt_reconstruction_terms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">33</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torch_float_datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torch_complex_datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.complex64</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase" title="Permalink to this definition"></a></dt>
+<dd><p>Base class for Inverse Laplace Transform (ILT) Algorithms. This reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a system of Laplace representations.</p>
+<p>Given a parameterized Laplace representation function <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+    \mathbf{x}(t) &amp; = \text{inverse_laplace_transform}(\mathbf{F}(\mathbf{s}), t)
+\end{aligned}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(t\)</span> is the time points to reconstruct trajectories for.</p>
+<p>The Laplace representation function <code class="xref py py-attr docutils literal notranslate"><span class="pre">fs</span></code>, <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span> takes an input complex value <span class="math notranslate nohighlight">\(\mathbf{s}\)</span>.
+This <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> is used internally when reconstructing a specified time point with the selected inverse Laplace transform algorithm class.</p>
+<p>The reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> are of shape <span class="math notranslate nohighlight">\((\text{MiniBatchSize}, \text{SeqLen}, d_{\text{obs}})\)</span>.
+Where <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the input evaluated time points <span class="math notranslate nohighlight">\(t\)</span>, and <span class="math notranslate nohighlight">\(d_{\text{obs}}\)</span> is the trajectory dimension for a given time point, <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>.</p>
+<p>The inverse Laplace transform (ILT) is defined as</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+    \hat{\mathbf{x}}(t) = \mathcal{L}^{-1}\{\mathbf{F}(\mathbf{s})\}(t)=\frac{1}{2\pi i} \int_{\sigma - i \infty}^{\sigma + i \infty} \mathbf{F}(\mathbf{s})e^{\mathbf{s}t}d\mathbf{s}
+\end{aligned}\]</div>
+<p>where the integral refers to the Bromwich contour integral in <span class="math notranslate nohighlight">\(\mathbb{C}^d\)</span> with the contour <span class="math notranslate nohighlight">\(\sigma&gt;0\)</span> chosen such that all the singularities of <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>
+are to the left of it <a class="reference external" href="https://arxiv.org/abs/2206.04843">[1]</a>.</p>
+<p>Many algorithms have been developed to numerically evaluate the ILT Equation (above). On a high level, they involve two steps:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    \mathcal{Q}(t) &amp;= \text{ILT-Query} (t) \\
+    \hat{\mathbf{x}}(t) &amp;= \text{ILT-Compute}\big(\{\mathbf{F}(\mathbf{s})| \mathbf{s} \in \mathcal{Q}(t) \}\big)
+\end{aligned}\end{split}\]</div>
+<p>To evaluate <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> on time points <span class="math notranslate nohighlight">\(t \in \mathcal{T} \subset \mathbb{R}\)</span>, the algorithms first construct a set of
+<cite>query points</cite> <span class="math notranslate nohighlight">\(\mathbf{s} \in \mathcal{Q}(\mathcal{T}) \subset \mathbb{C}\)</span>.
+They then compute <span class="math notranslate nohighlight">\(\hat{\mathbf{x}}(t)\)</span> using the <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span> evaluated on these points.
+The number of query points scales <cite>linearly</cite> with the number of time points, i.e. <span class="math notranslate nohighlight">\(|\mathcal{Q}(\mathcal{T})| = b |\mathcal{T}|\)</span>, where the constant <span class="math notranslate nohighlight">\(b &gt; 1\)</span>,
+denotes the number of reconstruction terms per time point and is specific to the algorithm.
+Importantly, the computation complexity of ILT only depends on the <cite>number</cite> of time points, but not their values (e.g. ILT for <span class="math notranslate nohighlight">\(t=0\)</span> and <span class="math notranslate nohighlight">\(t=100\)</span> requires the same amount of computation).
+The vast majority of ILT algorithms are differentiable with respect to <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>, which allows the gradients to be back propagated through the ILT transform <a class="reference external" href="https://arxiv.org/abs/2206.04843">[1]</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
+<li><p><strong>torch_float_datatype</strong> (<em>Torch.dtype</em>) – Torch float datatype to use internally in the ILT algorithm, and also output data type of <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>. Default <cite>torch.float32</cite>.</p></li>
+<li><p><strong>torch_complex_datatype</strong> (<em>Torch.dtype</em>) – Torch complex datatype to use internally in the ILT algorithm. Default <cite>torch.cfloat</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase.compute_s">
+<span class="sig-name descname"><span class="pre">compute_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ti</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase.compute_s" title="Permalink to this definition"></a></dt>
+<dd><p>Computes <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> to evaluate the Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span> at, from the input time points <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of complex s points <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, \text{ReconTerms})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points <span class="math notranslate nohighlight">\(t\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstructs a trajectory <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>, at time points <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fs</strong> (<em>Torch.nn.Module</em><em> or </em><em>Callable</em>) – The first parameter.</p></li>
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>.
+<span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points <span class="math notranslate nohighlight">\(t\)</span>.
+This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase.line_integrate">
+<span class="sig-name descname"><span class="pre">line_integrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase.line_integrate" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time
+points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase.line_integrate_all_multi">
+<span class="sig-name descname"><span class="pre">line_integrate_all_multi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase.line_integrate_all_multi" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm (takes batch input of <cite>fp</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>Best practice for most ILT algorithms is to set T =</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>T</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for used as the reconstruction of times up to <cite>T</cite> time point of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>ti</strong> – </p></li>
+<li><p><strong>T.</strong> (<em>for the ILT algorithms that rely on</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen}, d_{\text{obs}})\)</span>.
+<span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="fourier">
+<h3>Fourier<a class="headerlink" href="#fourier" title="Permalink to this headline"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.Fourier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torchlaplace.inverse_laplace.</span></span><span class="sig-name descname"><span class="pre">Fourier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ilt_reconstruction_terms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">33</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torch_float_datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torch_complex_datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.complex64</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.Fourier" title="Permalink to this definition"></a></dt>
+<dd><p>Inherits from <a class="reference internal" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase" title="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase()</span></code></a>.</p>
+<p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a system of Laplace representations.
+Given a parameterized Laplace representation function <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>.</p>
+<p>Expands ILT Equation into an expanded Fourier transform, approximating it with the trapezoidal rule.
+This keeps the Bromwich contour parallel to the imaginary axis, and shifts it along the real axis, i.e. <span class="math notranslate nohighlight">\(\sigma \propto \frac{1}{t}\)</span>.
+It is fairly easy to implement and scale to multiple dimensions. We denote <span class="math notranslate nohighlight">\(s=\sigma + i \omega\)</span> and we can express it as,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{split}
+    \mathbf{x}(t) &amp; =  \frac{1}{\pi}e^{\sigma t} \int_0^\infty \Re \left\{ F(s) e^{i \omega t} \right\} d \omega \\
+    &amp; \approx \frac{1}{T} e^{\sigma t} \left[ \frac{F(\sigma)}{2}  + \sum_{k=1}^{2N} \Re \left\{  F \left( \sigma + \frac{ik\pi}{T} \right)e^{\frac{ik \pi t}{T}} \right\}      \right]
+\end{split}\end{split}\]</div>
+<p>Where we approximate the first Fourier ILT, Equation as a discretized version, using the trapezoidal rule with step size <span class="math notranslate nohighlight">\(\frac{\pi}{T}\)</span> and evaluating <span class="math notranslate nohighlight">\(s\)</span> at the
+approximation points <span class="math notranslate nohighlight">\(s_k=\sigma + \frac{ik\pi}{T}\)</span> in the trapezoidal summation.
+We set the parameters of <span class="math notranslate nohighlight">\(\sigma=\alpha-\frac{\log(\epsilon)}{T}\)</span>, with <span class="math notranslate nohighlight">\(\alpha=1e-3\)</span>, <span class="math notranslate nohighlight">\(\epsilon=10\alpha\)</span>, and the scaling parameter <span class="math notranslate nohighlight">\(T=2t\)</span>. This gives the query function,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{split}
+    s_k(t) &amp; = \text{1e-3} - \frac{\log(\text{1e-2})}{2t} + \frac{ik\pi}{2t} \\
+    \mathcal{Q}(t) &amp; = [s_0(t), \ldots, s_{2N}(t)]^T
+\end{split}\end{split}\]</div>
+<p>Where we model the equation with <span class="math notranslate nohighlight">\(2N + 1\)</span> reconstruction terms, setting <span class="math notranslate nohighlight">\(N=16\)</span> in experiments, and use double point floating precision to increase the numerical precision of the ILT.</p>
+<p>The ILT-FSI equation provides guarantees that we can always find the inverse from time <span class="math notranslate nohighlight">\(t: 0 \rightarrow \infty\)</span>, given that the singularities of the system (i.e. the
+points at which <span class="math notranslate nohighlight">\(F(s) \to \infty\)</span>) lie left of the contour of integration, and this puts no constraint on the imaginary frequency components we can model.
+Of course in practice, we often do not model time at <span class="math notranslate nohighlight">\(\infty\)</span> and instead model up to a fixed time in the future, which then bounds the exponentially increasing system
+trajectories, and their associated system poles that we can model <span class="math notranslate nohighlight">\(\sigma \propto \frac{1}{t}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
+<li><p><strong>torch_float_datatype</strong> (<em>Torch.dtype</em>) – Torch float datatype to use internally in the ILT algorithm, and also output data type of <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>. Default <cite>torch.float32</cite>.</p></li>
+<li><p><strong>torch_complex_datatype</strong> (<em>Torch.dtype</em>) – Torch complex datatype to use internally in the ILT algorithm. Default <cite>torch.cfloat</cite>.</p></li>
+<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – <span class="math notranslate nohighlight">\(\alpha\)</span>, default <span class="math notranslate nohighlight">\(\alpha=1e-3\)</span>.</p></li>
+<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – desired tolerance, if not specified simply related to alpha as <span class="math notranslate nohighlight">\(\text{tol}=10\alpha\)</span>.</p></li>
+<li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – scaling factor (tuneable), default 2.0.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Small machine floating point precision, default <span class="math notranslate nohighlight">\(\text{eps}=1e-6\)</span>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.Fourier.compute_s">
+<span class="sig-name descname"><span class="pre">compute_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ti</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.Fourier.compute_s" title="Permalink to this definition"></a></dt>
+<dd><p>Computes <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> to evaluate the Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span> at, from the input time points <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+<li><p><strong>Ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Scaled maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>T=time_max * self.scale</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of complex s points <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, \text{ReconTerms})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points <span class="math notranslate nohighlight">\(t\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.Fourier.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ti</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.Fourier.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstructs a trajectory <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>, at time points <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fs</strong> (<em>Torch.nn.Module</em><em> or </em><em>Callable</em>) – The first parameter.</p></li>
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+<li><p><strong>Ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Scaled maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>T=time_max * self.scale</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different
+time points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.Fourier.line_integrate">
+<span class="sig-name descname"><span class="pre">line_integrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.Fourier.line_integrate" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>most ILT algorithms is to set T =</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>T</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for used as the reconstruction of times up to <cite>T</cite> time point of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>. Best practice for</p></li>
+<li><p><strong>ti</strong> – </p></li>
+<li><p><strong>T.</strong> (<em>for the ILT algorithms that rely on</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time
+points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.Fourier.line_integrate_all_multi">
+<span class="sig-name descname"><span class="pre">line_integrate_all_multi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.Fourier.line_integrate_all_multi" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm (takes batch input of <cite>fp</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>to set T =</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>T</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for used as the reconstruction of times up to <cite>T</cite> time point of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>. Best practice for most ILT algorithms is</p></li>
+<li><p><strong>ti</strong> – </p></li>
+<li><p><strong>T.</strong> (<em>for the ILT algorithms that rely on</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time
+points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.Fourier.line_integrate_multi">
+<span class="sig-name descname"><span class="pre">line_integrate_multi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.Fourier.line_integrate_multi" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>most ILT algorithms is to set T =</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>T</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for used as the reconstruction of times up to <cite>T</cite> time point of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>. Best practice for</p></li>
+<li><p><strong>ti</strong> – </p></li>
+<li><p><strong>T.</strong> (<em>for the ILT algorithms that rely on</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time
+points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="dehoog">
+<h3>DeHoog<a class="headerlink" href="#dehoog" title="Permalink to this headline"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.DeHoog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torchlaplace.inverse_laplace.</span></span><span class="sig-name descname"><span class="pre">DeHoog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ilt_reconstruction_terms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">33</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torch_float_datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torch_complex_datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.complex64</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.DeHoog" title="Permalink to this definition"></a></dt>
+<dd><p>Inherits from <a class="reference internal" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase" title="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase()</span></code></a>.</p>
+<p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a system of Laplace representations.
+Given a parameterized Laplace representation function <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>.</p>
+<p><cite>De Hoog</cite> Is an accelerated version of the Fouier ILT, defined in <a class="reference internal" href="#torchlaplace.inverse_laplace.Fourier" title="torchlaplace.inverse_laplace.Fourier"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torchlaplace.inverse_laplace.Fourier()</span></code></a>.
+It uses a non-linear double acceleration, using Padé approximation along with a remainder term for the series.
+This is somewhat complicated to implement, due to the recurrence operations to represent the Padé approximation, due to this although higher precision, the gradients
+have to propagate through many recurrence relation paths, making it slow to use in practice compared to Fourier (FSI), however more accurate when we can afford the additional time complexity.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Reference: De Hoog, F. R., Knight, J., and Stokes, A. An improved method for numerical inversion of laplace transforms.
+SIAM Journal on Scientific and Statistical Computing, 3(3):357–366, 1982</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
+<li><p><strong>torch_float_datatype</strong> (<em>Torch.dtype</em>) – Torch float datatype to use internally in the ILT algorithm, and also output data type of <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>. Default <cite>torch.float32</cite>.</p></li>
+<li><p><strong>torch_complex_datatype</strong> (<em>Torch.dtype</em>) – Torch complex datatype to use internally in the ILT algorithm. Default <cite>torch.cfloat</cite>.</p></li>
+<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – <span class="math notranslate nohighlight">\(\alpha\)</span>, default <span class="math notranslate nohighlight">\(\alpha=10e-10\)</span>.</p></li>
+<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – desired tolerance, if not specified simply related to alpha as <span class="math notranslate nohighlight">\(\text{tol}=10\alpha\)</span>.</p></li>
+<li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – scaling factor (tuneable), default 2.0.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.DeHoog.compute_fixed_s">
+<span class="sig-name descname"><span class="pre">compute_fixed_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_max</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.DeHoog.compute_fixed_s" title="Permalink to this definition"></a></dt>
+<dd><p>Computes <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> to evaluate the Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span> at for a single input time point <cite>time_max</cite>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to, a single time point to generate <cite>s</cite> for.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of complex s points <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> of shape <span class="math notranslate nohighlight">\((\text{ReconTerms})\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.DeHoog.compute_s">
+<span class="sig-name descname"><span class="pre">compute_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ti</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.DeHoog.compute_s" title="Permalink to this definition"></a></dt>
+<dd><p>Computes <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> to evaluate the Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span> at, from the input time points <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+<li><p><strong>Ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Scaled maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>T=time_max * self.scale</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of complex s points <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, \text{ReconTerms})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points <span class="math notranslate nohighlight">\(t\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.DeHoog.fixed_line_integrate">
+<span class="sig-name descname"><span class="pre">fixed_line_integrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_max</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.DeHoog.fixed_line_integrate" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>algorithms is to set T =</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>T</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for used as the reconstruction of times up to <cite>T</cite> time point of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>. Best practice for most ILT</p></li>
+<li><p><strong>ti</strong> – </p></li>
+<li><p><strong>T.</strong> (<em>for the ILT algorithms that rely on</em>) – </p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to, a single time point to generate <cite>s</cite> for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points
+<span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.DeHoog.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ti</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.DeHoog.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstructs a trajectory <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>, at time points <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fs</strong> (<em>Torch.nn.Module</em><em> or </em><em>Callable</em>) – The first parameter.</p></li>
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+<li><p><strong>Ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Scaled maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>T=time_max * self.scale</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points
+<span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.DeHoog.line_integrate">
+<span class="sig-name descname"><span class="pre">line_integrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.DeHoog.line_integrate" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>algorithms is to set T =</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>T</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for used as the reconstruction of times up to <cite>T</cite> time point of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>. Best practice for most ILT</p></li>
+<li><p><strong>ti</strong> – </p></li>
+<li><p><strong>T.</strong> (<em>for the ILT algorithms that rely on</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points
+<span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.DeHoog.line_integrate_all_multi">
+<span class="sig-name descname"><span class="pre">line_integrate_all_multi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.DeHoog.line_integrate_all_multi" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm (takes batch input of <cite>fp</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>algorithms is to set T =</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>T</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for used as the reconstruction of times up to <cite>T</cite> time point of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>. Best practice for most ILT</p></li>
+<li><p><strong>ti</strong> – </p></li>
+<li><p><strong>T.</strong> (<em>for the ILT algorithms that rely on</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different
+time points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="fixedtablot">
+<h3>FixedTablot<a class="headerlink" href="#fixedtablot" title="Permalink to this headline"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.FixedTablot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torchlaplace.inverse_laplace.</span></span><span class="sig-name descname"><span class="pre">FixedTablot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ilt_reconstruction_terms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">33</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torch_float_datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torch_complex_datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.complex64</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.FixedTablot" title="Permalink to this definition"></a></dt>
+<dd><p>Inherits from <a class="reference internal" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase" title="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase()</span></code></a>.</p>
+<p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a system of Laplace representations.
+Given a parameterized Laplace representation function <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>.</p>
+<p>Deforms the Bromwich contour around the negative real axis, where <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span> must not overflow as <span class="math notranslate nohighlight">\(\mathbf{s} \to -\infty\)</span>,
+and makes the Bromwich contour integral rapidly converge as <span class="math notranslate nohighlight">\(\mathbf{s} \to -\infty\)</span> causes <span class="math notranslate nohighlight">\(e^{\mathbf{s}t} \to 0\)</span> in ILT Equation.
+We implemented the Fixed Tablot method, which is simple to implement.
+However it suffers from not being able to model solutions that have large sinusoidal components and instead is optimized for modelling decaying exponential solutions.
+We note that whilst it can approximate some small sinusoidal components, for an adaptive time contour, the sinusoidal components that can be represented decrease when</p>
+<blockquote>
+<div><p>modelling longer time trajectories, and in the limit for long time horizons, allow only representations of decaying exponentials.</p>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>References: Abate, J. and Valko, P. P. Multi-precision laplace transform inversion. International Journal for Numerical Methods in Engineering, 60:979–993, 2004.</p>
+<p>Talbot, A. The accurate numerical inversion of laplace transforms. IMA Journal of Applied Mathematics, 23(1): 97–120, 1979.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
+<li><p><strong>torch_float_datatype</strong> (<em>Torch.dtype</em>) – Torch float datatype to use internally in the ILT algorithm, and also output data type of <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>. Default <cite>torch.float32</cite>.</p></li>
+<li><p><strong>torch_complex_datatype</strong> (<em>Torch.dtype</em>) – Torch complex datatype to use internally in the ILT algorithm. Default <cite>torch.cfloat</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.FixedTablot.compute_s">
+<span class="sig-name descname"><span class="pre">compute_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.FixedTablot.compute_s" title="Permalink to this definition"></a></dt>
+<dd><p>Computes <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> to evaluate the Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span> at, from the input time points <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of complex s points <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, \text{ReconTerms})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points <span class="math notranslate nohighlight">\(t\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.FixedTablot.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.FixedTablot.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstructs a trajectory <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>, at time points <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fs</strong> (<em>Torch.nn.Module</em><em> or </em><em>Callable</em>) – The first parameter.</p></li>
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time
+points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.FixedTablot.line_integrate">
+<span class="sig-name descname"><span class="pre">line_integrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.FixedTablot.line_integrate" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time
+points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.FixedTablot.line_integrate_multi">
+<span class="sig-name descname"><span class="pre">line_integrate_multi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.FixedTablot.line_integrate_multi" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points
+<span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="stehfest">
+<h3>Stehfest<a class="headerlink" href="#stehfest" title="Permalink to this headline"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.Stehfest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torchlaplace.inverse_laplace.</span></span><span class="sig-name descname"><span class="pre">Stehfest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ilt_reconstruction_terms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">33</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torch_float_datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torch_complex_datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.complex64</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.Stehfest" title="Permalink to this definition"></a></dt>
+<dd><p>Inherits from <a class="reference internal" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase" title="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase()</span></code></a>.</p>
+<p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a system of Laplace representations.
+Given a parameterized Laplace representation function <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>.</p>
+<p>Uses a discrete version of the Post-Widder formula that is an approximation for ILT Equation using a power series expansion of real part of <span class="math notranslate nohighlight">\(\mathbf{s}\)</span>.
+It has internal terms that alternate in sign and become large as the order of approximation is increased, and suffers from numerical precision issues for large orders of approximation.
+It is fairly easy to implement.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Reference: Al-Shuaibi, A. Inversion of the laplace transform via post—widder formula. Integral Transforms and Special Functions, 11(3):225–232, 2001.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
+<li><p><strong>torch_float_datatype</strong> (<em>Torch.dtype</em>) – Torch float datatype to use internally in the ILT algorithm, and also output data type of <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>. Default <cite>torch.float32</cite>.</p></li>
+<li><p><strong>torch_complex_datatype</strong> (<em>Torch.dtype</em>) – Torch complex datatype to use internally in the ILT algorithm. Default <cite>torch.cfloat</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.Stehfest.compute_s">
+<span class="sig-name descname"><span class="pre">compute_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ti</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.Stehfest.compute_s" title="Permalink to this definition"></a></dt>
+<dd><p>Computes <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> to evaluate the Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span> at, from the input time points <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of complex s points <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, \text{ReconTerms})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points <span class="math notranslate nohighlight">\(t\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.Stehfest.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.Stehfest.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstructs a trajectory <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>, at time points <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fs</strong> (<em>Torch.nn.Module</em><em> or </em><em>Callable</em>) – The first parameter.</p></li>
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>.
+<span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points <span class="math notranslate nohighlight">\(t\)</span>.
+This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.Stehfest.line_integrate">
+<span class="sig-name descname"><span class="pre">line_integrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.Stehfest.line_integrate" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time
+points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="cme">
+<h3>CME<a class="headerlink" href="#cme" title="Permalink to this headline"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.CME">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">torchlaplace.inverse_laplace.</span></span><span class="sig-name descname"><span class="pre">CME</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ilt_reconstruction_terms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">33</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torch_float_datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.float32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torch_complex_datatype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.complex64</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.CME" title="Permalink to this definition"></a></dt>
+<dd><p>Inherits from <a class="reference internal" href="#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase" title="torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase()</span></code></a>.</p>
+<p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a system of Laplace representations.
+Given a parameterized Laplace representation function <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>.</p>
+<p>Concentrated matrix exponential (CME), uses a similar form to that of the Fourier Series Inverse, approximating ILT Equation with the trapezoidal rule. This uses the form of,</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+    \mathbf{x}(t) \approx \frac{1}{T}\sum_{k=1}^{2N} \eta_k F \left(\frac{\beta_k}{T}\right)
+\end{aligned}\]</div>
+<p>The coefficients <span class="math notranslate nohighlight">\(\eta_k, \beta_k\)</span> are determined by a complex procedure, with a numerical optimization step involved.
+This provides a good approximation for the reconstruction and the coefficients of up to a pre-specified order can be pre-computed and cached for low complexity run time.
+Similarly to Fourier (FSI), CMEs Bromwich contour remains parallel to the imaginary axis and is shifted along the real axis, i.e. <span class="math notranslate nohighlight">\(\sigma \propto \frac{1}{t}\)</span>.
+It is moderately easy to implement when using pre-computed coefficients and scale to multiple dimensions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Reference: Horváth, G., Horváth, I., Almousa, S. A.-D., and Telek, M. Numerical inverse laplace transformation using concentrated matrix exponential distributions. Performance Evaluation, 137:102067, 2020.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
+<li><p><strong>torch_float_datatype</strong> (<em>Torch.dtype</em>) – Torch float datatype to use internally in the ILT algorithm, and also output data type of <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>. Default <cite>torch.float32</cite>.</p></li>
+<li><p><strong>torch_complex_datatype</strong> (<em>Torch.dtype</em>) – Torch complex datatype to use internally in the ILT algorithm. Default <cite>torch.cfloat</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.CME.compute_s">
+<span class="sig-name descname"><span class="pre">compute_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ti</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.CME.compute_s" title="Permalink to this definition"></a></dt>
+<dd><p>Computes <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> to evaluate the Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span> at, from the input time points <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of complex s points <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, \text{ReconTerms})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points <span class="math notranslate nohighlight">\(t\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.CME.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.CME.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstructs a trajectory <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span>, at time points <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fs</strong> (<em>Torch.nn.Module</em><em> or </em><em>Callable</em>) – The first parameter.</p></li>
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>.
+<span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points <span class="math notranslate nohighlight">\(t\)</span>.
+This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.CME.line_integrate">
+<span class="sig-name descname"><span class="pre">line_integrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.CME.line_integrate" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time
+points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.CME.line_integrate_all_multi">
+<span class="sig-name descname"><span class="pre">line_integrate_all_multi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.CME.line_integrate_all_multi" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm (takes batch input of <cite>fp</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>Best practice for most ILT algorithms is to set T =</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>T</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for used as the reconstruction of times up to <cite>T</cite> time point of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
+<li><p><strong>ti</strong> – </p></li>
+<li><p><strong>T.</strong> (<em>for the ILT algorithms that rely on</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen}, d_{\text{obs}})\)</span>.
+<span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="module-torchlaplace.transformations">
+<span id="transformation-functions"></span><h2>Transformation Functions<a class="headerlink" href="#module-torchlaplace.transformations" title="Permalink to this headline"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torchlaplace.transformations.complex_to_spherical_riemann" title="torchlaplace.transformations.complex_to_spherical_riemann"><code class="xref py py-obj docutils literal notranslate"><span class="pre">complex_to_spherical_riemann</span></code></a>(s_real, s_imag)</p></td>
+<td><p>Complex coordinates to to Spherical Riemann stereographic projection coordinates.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torchlaplace.transformations.spherical_riemann_to_complex" title="torchlaplace.transformations.spherical_riemann_to_complex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_riemann_to_complex</span></code></a>(theta, phi)</p></td>
+<td><p>Spherical Riemann stereographic projection coordinates to complex number coordinates.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torchlaplace.transformations.spherical_to_complex" title="torchlaplace.transformations.spherical_to_complex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_to_complex</span></code></a>(theta, phi)</p></td>
+<td><p>Spherical Riemann stereographic projection coordinates to complex number coordinates.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torchlaplace.transformations.complex_to_spherical" title="torchlaplace.transformations.complex_to_spherical"><code class="xref py py-obj docutils literal notranslate"><span class="pre">complex_to_spherical</span></code></a>(s)</p></td>
+<td><p>Complex coordinates to to Spherical Riemann stereographic projection coordinates.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="complex-to-spherical-riemann">
+<h3>complex_to_spherical_riemann<a class="headerlink" href="#complex-to-spherical-riemann" title="Permalink to this headline"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="torchlaplace.transformations.complex_to_spherical_riemann">
+<span class="sig-prename descclassname"><span class="pre">torchlaplace.transformations.</span></span><span class="sig-name descname"><span class="pre">complex_to_spherical_riemann</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s_real</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_imag</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.transformations.complex_to_spherical_riemann" title="Permalink to this definition"></a></dt>
+<dd><p>Complex coordinates to to Spherical Riemann stereographic projection coordinates.
+I.e. we can translate any complex number <span class="math notranslate nohighlight">\(s\in \mathbb{C}\)</span> into a coordinate on the Riemann Sphere <span class="math notranslate nohighlight">\((\theta, \phi) \in \mathcal{D} = (-{\pi}, {\pi}) \times (-\frac{\pi}{2}, \frac{\pi}{2})\)</span>, i.e.</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+    u(s) = \left( \arctan \left( \frac{\Im(s)}{\Re(s)} \right),\arcsin \left( \frac{|s|^2-1}{|s|^2+1} \right) \right)
+\end{aligned}\]</div>
+<p>For more details see <a class="reference external" href="https://arxiv.org/abs/2206.04843">[1]</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s_real</strong> (<em>Tensor</em>) – Real component of the complex tensor, of shape <span class="math notranslate nohighlight">\((\text{dimension})\)</span>.</p></li>
+<li><p><strong>s_imag</strong> (<em>Tensor</em>) – Imaginary component of the complex tensor, of shape <span class="math notranslate nohighlight">\((\text{dimension})\)</span>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple Tensor of <span class="math notranslate nohighlight">\((\theta, \phi)\)</span> of complex number in spherical Riemann stereographic projection coordinates. Where the shape  of <span class="math notranslate nohighlight">\(\theta, \phi\)</span> is of shape <span class="math notranslate nohighlight">\((\text{dimension})\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="spherical-riemann-to-complex">
+<h3>spherical_riemann_to_complex<a class="headerlink" href="#spherical-riemann-to-complex" title="Permalink to this headline"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="torchlaplace.transformations.spherical_riemann_to_complex">
+<span class="sig-prename descclassname"><span class="pre">torchlaplace.transformations.</span></span><span class="sig-name descname"><span class="pre">spherical_riemann_to_complex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.transformations.spherical_riemann_to_complex" title="Permalink to this definition"></a></dt>
+<dd><p>Spherical Riemann stereographic projection coordinates to complex number coordinates. I.e. inverse Spherical Riemann stereographic projection map.</p>
+<p>The inverse transform, <span class="math notranslate nohighlight">\(v: \mathcal{D} \rightarrow \mathbb{C}\)</span>, is given as</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+    s = v(\theta, \phi) = \tan \left( \frac{\phi}{2} + \frac{\pi}{4} \right) e^{i \theta}
+\end{aligned}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theta</strong> (<em>Tensor</em>) – Spherical Riemann stereographic projection coordinates, shape <span class="math notranslate nohighlight">\(\theta\)</span> component of shape <span class="math notranslate nohighlight">\((\text{dimension})\)</span>.</p></li>
+<li><p><strong>phi</strong> (<em>Tensor</em>) – Spherical Riemann stereographic projection coordinates, shape <span class="math notranslate nohighlight">\(\phi\)</span> component of shape <span class="math notranslate nohighlight">\((\text{dimension})\)</span>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple Tensor of real and imaginary components of the complex numbers coordinate, of <span class="math notranslate nohighlight">\((\Re(s), \Im(s))\)</span>. Where <span class="math notranslate nohighlight">\(s \in \mathbb{C}^d\)</span>, with <span class="math notranslate nohighlight">\(d\)</span> is <span class="math notranslate nohighlight">\(\text{dimension}\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="spherical-to-complex">
+<h3>spherical_to_complex<a class="headerlink" href="#spherical-to-complex" title="Permalink to this headline"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="torchlaplace.transformations.spherical_to_complex">
+<span class="sig-prename descclassname"><span class="pre">torchlaplace.transformations.</span></span><span class="sig-name descname"><span class="pre">spherical_to_complex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.transformations.spherical_to_complex" title="Permalink to this definition"></a></dt>
+<dd><p>Spherical Riemann stereographic projection coordinates to complex number coordinates. I.e. inverse Spherical Riemann stereographic projection map.</p>
+<p>The inverse transform, <span class="math notranslate nohighlight">\(v: \mathcal{D} \rightarrow \mathbb{C}\)</span>, is given as</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+    s = v(\theta, \phi) = \tan \left( \frac{\phi}{2} + \frac{\pi}{4} \right) e^{i \theta}
+\end{aligned}\]</div>
+<p>This uses <a class="reference internal" href="#torchlaplace.transformations.spherical_riemann_to_complex" title="torchlaplace.transformations.spherical_riemann_to_complex"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torchlaplace.transformations.spherical_riemann_to_complex()</span></code></a>, however provides maintains the shape of the input tensor and output tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theta</strong> (<em>Tensor</em>) – Spherical Riemann stereographic projection coordinates, shape <span class="math notranslate nohighlight">\(\theta\)</span> component of shape <span class="math notranslate nohighlight">\((\text{Shape})\)</span>.</p></li>
+<li><p><strong>phi</strong> (<em>Tensor</em>) – Spherical Riemann stereographic projection coordinates, shape <span class="math notranslate nohighlight">\(\phi\)</span> component of shape <span class="math notranslate nohighlight">\((\text{Shape})\)</span>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Complex Tensor of the complex numbers coordinate, of shape <span class="math notranslate nohighlight">\((\text{Shape})\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="complex-to-spherical">
+<h3>complex_to_spherical<a class="headerlink" href="#complex-to-spherical" title="Permalink to this headline"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="torchlaplace.transformations.complex_to_spherical">
+<span class="sig-prename descclassname"><span class="pre">torchlaplace.transformations.</span></span><span class="sig-name descname"><span class="pre">complex_to_spherical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.transformations.complex_to_spherical" title="Permalink to this definition"></a></dt>
+<dd><p>Complex coordinates to to Spherical Riemann stereographic projection coordinates.
+I.e. we can translate any complex number <span class="math notranslate nohighlight">\(s\in \mathbb{C}\)</span> into a coordinate on the Riemann Sphere <span class="math notranslate nohighlight">\((\theta, \phi) \in \mathcal{D} = (-{\pi}, {\pi}) \times (-\frac{\pi}{2}, \frac{\pi}{2})\)</span>, i.e.</p>
+<div class="math notranslate nohighlight">
+\[\begin{aligned}
+    u(s) = \left( \arctan \left( \frac{\Im(s)}{\Re(s)} \right),\arcsin \left( \frac{|s|^2-1}{|s|^2+1} \right) \right)
+\end{aligned}\]</div>
+<p>For more details see <a class="reference external" href="https://arxiv.org/abs/2206.04843">[1]</a>.</p>
+<p>This uses <a class="reference internal" href="#torchlaplace.transformations.complex_to_spherical_riemann" title="torchlaplace.transformations.complex_to_spherical_riemann"><code class="xref py py-meth docutils literal notranslate"><span class="pre">torchlaplace.transformations.complex_to_spherical_riemann()</span></code></a>, however provides maintains the shape of the input tensor and output tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>Tensor</em>) – Complex tensor, of shape <span class="math notranslate nohighlight">\((\text{Shape})\)</span>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tuple Tensor of <span class="math notranslate nohighlight">\((\theta, \phi)\)</span> of complex number in spherical Riemann stereographic projection coordinates. Where the shape of <span class="math notranslate nohighlight">\(\theta, \phi\)</span> each is of shape <span class="math notranslate nohighlight">\((\text{Shape})\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="notebooks/user_ilt.html" class="btn btn-neutral float-left" title="User Guide Inverse Laplace Transform Algorithms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="develop.html" class="btn btn-neutral float-right" title="Developer Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Sam Holt.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

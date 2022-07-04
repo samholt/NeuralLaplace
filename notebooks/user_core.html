@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Guide Laplace Reconstruct &mdash; TorchLaplace 0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/torchlaplace.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="User Guide Inverse Laplace Transform Algorithms" href="user_ilt.html" />
+    <link rel="prev" title="Getting started" href="../getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> TorchLaplace
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User Guide Laplace Reconstruct</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Basic-usage">Basic usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Example">Example</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Define-an-encoder-and-a-Laplace-representation-functional-F(p,-s)">Define an encoder and a Laplace representation functional F(p, s)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Load-a-dataset">Load a dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Instantiate-model-and-sample-prediction">Instantiate model and sample prediction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Train-end-to-end">Train end to end</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_ilt.html">User Guide Inverse Laplace Transform Algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../develop.html">Developer Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">TorchLaplace</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>User Guide Laplace Reconstruct</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notebooks/user_core.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="User-Guide-Laplace-Reconstruct">
+<h1>User Guide Laplace Reconstruct<a class="headerlink" href="#User-Guide-Laplace-Reconstruct" title="Permalink to this headline"></a></h1>
+<section id="Basic-usage">
+<h2>Basic usage<a class="headerlink" href="#Basic-usage" title="Permalink to this headline"></a></h2>
+<p>This library provides one main interface <code class="docutils literal notranslate"><span class="pre">laplace_reconstruct</span></code> which uses a selected inverse Laplace transform algorithm to reconstruct trajectories from a provided parameterized Laplace representation functional <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{p},\mathbf{s})\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{x}(t) = \text{inverse laplace transform}(\mathbf{F}(\mathbf{p},\mathbf{s}), t)\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> is a Tensor encoding the initial system state as a latent variable, and <span class="math notranslate nohighlight">\(t\)</span> is the time points to reconstruct trajectories for.</p>
+<p>This can be used by</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from torchlaplace import laplace_reconstruct
+
+laplace_reconstruct(laplace_rep_func, p, t)
+</pre></div>
+</div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">laplace_rep_func</span></code> is any callable implementing the parameterized Laplace representation functional <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{p},\mathbf{s})\)</span>, <code class="docutils literal notranslate"><span class="pre">p</span></code> is a Tensor encoding the initial state of shape <span class="math notranslate nohighlight">\((\text{MiniBatchSize},\text{K})\)</span>. Where <span class="math notranslate nohighlight">\(\text{K}\)</span> is a hyperparameter, and can be set by the user. Finally, <code class="docutils literal notranslate"><span class="pre">t</span></code> is a Tensor of shape <span class="math notranslate nohighlight">\((\text{MiniBatchSize},\text{SeqLen})\)</span> or <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span> containing the time points to reconstruct the trajectories for.</p>
+<p>Note that this is not numerically stable for all ILT methods, however should probably be fine with the default <code class="docutils literal notranslate"><span class="pre">fourier</span></code> (fourier series inverse) ILT algorithm.</p>
+<p>The parameterized Laplace representation functional <code class="docutils literal notranslate"><span class="pre">laplace_rep_func</span></code>, <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{p},\mathbf{s})\)</span> also takes an input complex value <span class="math notranslate nohighlight">\(\mathbf{s}\)</span>. This <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> is used internally when reconstructing a specified time point with the selected inverse Laplace transform algorithm <code class="docutils literal notranslate"><span class="pre">ilt_algorithm</span></code>.</p>
+<p>The biggest <strong>gotcha</strong> is that <code class="docutils literal notranslate"><span class="pre">laplace_rep_func</span></code> must be a <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code> when using the <code class="docutils literal notranslate"><span class="pre">laplace_rep_func</span></code> function. This is due to internally needing to collect the parameters of the parameterized Laplace representation.</p>
+<p>To replicate the experiments in <a class="reference external" href="https://arxiv.org/abs/2206.04843">[1]</a> see the in the <a class="reference external" href="https://github.com/samholt/NeuralLaplace/tree/master/experiments">experiments</a> directory.</p>
+</section>
+<section id="Example">
+<h2>Example<a class="headerlink" href="#Example" title="Permalink to this headline"></a></h2>
+<section id="Define-an-encoder-and-a-Laplace-representation-functional-F(p,-s)">
+<h3>Define an encoder and a Laplace representation functional F(p, s)<a class="headerlink" href="#Define-an-encoder-and-a-Laplace-representation-functional-F(p,-s)" title="Permalink to this headline"></a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from torch import nn
+import torch
+device = torch.device(&quot;cuda:0&quot; if torch.cuda.is_available() else &quot;cpu&quot;)
+
+# Model (encoder and Laplace representation func)
+class ReverseGRUEncoder(nn.Module):
+    # Encodes observed trajectory into latent vector
+    def __init__(self, dimension_in, latent_dim, hidden_units, encode_obs_time=True):
+        super(ReverseGRUEncoder, self).__init__()
+        self.encode_obs_time = encode_obs_time
+        if self.encode_obs_time:
+            dimension_in += 1
+        self.gru = nn.GRU(dimension_in, hidden_units, 2, batch_first=True)
+        self.linear_out = nn.Linear(hidden_units, latent_dim)
+        nn.init.xavier_uniform_(self.linear_out.weight)
+
+    def forward(self, observed_data, observed_tp):
+        trajs_to_encode = observed_data  # (batch_size, t_observed_dim, observed_dim)
+        if self.encode_obs_time:
+            trajs_to_encode = torch.cat(
+                (
+                    observed_data,
+                    observed_tp.view(1, -1, 1).repeat(observed_data.shape[0], 1, 1),
+                ),
+                dim=2,
+            )
+        reversed_trajs_to_encode = torch.flip(trajs_to_encode, (1,))
+        out, _ = self.gru(reversed_trajs_to_encode)
+        return self.linear_out(out[:, -1, :])
+
+class LaplaceRepresentationFunc(nn.Module):
+    # SphereSurfaceModel : C^{b+k} -&gt; C^{bxd} - In Riemann Sphere Co ords : b dim s reconstruction terms, k is latent encoding dimension, d is output dimension
+    def __init__(self, s_dim, output_dim, latent_dim, hidden_units=64):
+        super(LaplaceRepresentationFunc, self).__init__()
+        self.s_dim = s_dim
+        self.output_dim = output_dim
+        self.latent_dim = latent_dim
+        self.linear_tanh_stack = nn.Sequential(
+            nn.Linear(s_dim * 2 + latent_dim, hidden_units),
+            nn.Tanh(),
+            nn.Linear(hidden_units, hidden_units),
+            nn.Tanh(),
+            nn.Linear(hidden_units, (s_dim) * 2 * output_dim),
+        )
+
+        for m in self.linear_tanh_stack.modules():
+            if isinstance(m, nn.Linear):
+                nn.init.xavier_uniform_(m.weight)
+
+        phi_max = torch.pi / 2.0
+        self.phi_scale = phi_max - -torch.pi / 2.0
+
+    def forward(self, i):
+        out = self.linear_tanh_stack(i.view(-1, self.s_dim * 2 + self.latent_dim)).view(
+            -1, 2 * self.output_dim, self.s_dim
+        )
+        theta = nn.Tanh()(out[:, : self.output_dim, :]) * torch.pi  # From - pi to + pi
+        phi = (
+            nn.Tanh()(out[:, self.output_dim :, :]) * self.phi_scale / 2.0
+            - torch.pi / 2.0
+            + self.phi_scale / 2.0
+        )  # Form -pi / 2 to + pi / 2
+        return theta, phi
+<br/></pre></div>
+</div>
+</div>
+</section>
+<section id="Load-a-dataset">
+<h3>Load a dataset<a class="headerlink" href="#Load-a-dataset" title="Permalink to this headline"></a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from torch.utils.data import DataLoader
+from torchlaplace.data_utils import basic_collate_fn
+
+normalize_dataset = True
+batch_size = 128
+extrapolate = True
+
+def sawtooth(trajectories_to_sample=100, t_nsamples=200):
+    # Toy sawtooth waveform. Simple to generate, for Differential Equation Datasets see datasets.py (Note more complex DE take time to sample from, in some cases minutes).
+    t_end = 20.0
+    t_begin = t_end / t_nsamples
+    ti = torch.linspace(t_begin, t_end, t_nsamples).to(device)
+
+    def sampler(t, x0=0):
+        return (t + x0) / (2 * torch.pi) - torch.floor((t + x0) / (2 * torch.pi))
+
+    x0s = torch.linspace(0, 2 * torch.pi, trajectories_to_sample)
+    trajs = []
+    for x0 in x0s:
+        trajs.append(sampler(ti, x0))
+    y = torch.stack(trajs)
+    trajectories = y.view(trajectories_to_sample, -1, 1)
+    return trajectories, ti
+
+
+trajectories, t = sawtooth(
+    trajectories_to_sample=1000,
+    t_nsamples=200,
+)
+if normalize_dataset:
+    samples = trajectories.shape[0]
+    dim = trajectories.shape[2]
+    traj = (
+        torch.reshape(trajectories, (-1, dim))
+        - torch.reshape(trajectories, (-1, dim)).mean(0)
+    ) / torch.reshape(trajectories, (-1, dim)).std(0)
+    trajectories = torch.reshape(traj, (samples, -1, dim))
+train_split = int(0.8 * trajectories.shape[0])
+test_split = int(0.9 * trajectories.shape[0])
+traj_index = torch.randperm(trajectories.shape[0])
+train_trajectories = trajectories[traj_index[:train_split], :, :]
+val_trajectories = trajectories[traj_index[train_split:test_split], :, :]
+test_trajectories = trajectories[traj_index[test_split:], :, :]
+
+input_dim = train_trajectories.shape[2]
+output_dim = input_dim
+dltrain = DataLoader(
+    train_trajectories,
+    batch_size=batch_size,
+    shuffle=True,
+    collate_fn=lambda batch: basic_collate_fn(
+        batch,
+        t,
+        data_type=&quot;train&quot;,
+        extrap=extrapolate,
+    ),
+)
+dlval = DataLoader(
+    val_trajectories,
+    batch_size=batch_size,
+    shuffle=False,
+    collate_fn=lambda batch: basic_collate_fn(
+        batch,
+        t,
+        data_type=&quot;test&quot;,
+        extrap=extrapolate,
+    ),
+)
+dltest = DataLoader(
+    test_trajectories,
+    batch_size=batch_size,
+    shuffle=False,
+    collate_fn=lambda batch: basic_collate_fn(
+        batch,
+        t,
+        data_type=&quot;test&quot;,
+        extrap=extrapolate,
+    ),
+)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Instantiate-model-and-sample-prediction">
+<h3>Instantiate model and sample prediction<a class="headerlink" href="#Instantiate-model-and-sample-prediction" title="Permalink to this headline"></a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>latent_dim = 2
+hidden_units = 64
+encode_obs_time = True
+s_recon_terms = 33
+
+encoder = ReverseGRUEncoder(
+    input_dim,
+    latent_dim,
+    hidden_units // 2,
+    encode_obs_time=encode_obs_time,
+).to(device)
+laplace_rep_func = LaplaceRepresentationFunc(
+    s_recon_terms, output_dim, latent_dim
+).to(device)
+</pre></div>
+</div>
+</div>
+<p>We can generate predictions using <code class="docutils literal notranslate"><span class="pre">laplace_reconstruct</span></code> as follows</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from torchlaplace import laplace_reconstruct
+
+laplace_rep_func.eval(), encoder.eval()
+for batch in dlval:
+    trajs_to_encode = batch[
+        &quot;observed_data&quot;
+    ]  # (batch_size, t_observed_dim, observed_dim)
+    observed_tp = batch[&quot;observed_tp&quot;]  # (1, t_observed_dim)
+    p = encoder(
+        trajs_to_encode, observed_tp
+    )  # p is the latent tensor encoding the initial states
+    tp_to_predict = batch[&quot;tp_to_predict&quot;]
+    predictions = laplace_reconstruct(
+        laplace_rep_func, p, tp_to_predict, recon_dim=output_dim
+    )
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>predictions.shape
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+torch.Size([100, 100, 1])
+</pre></div></div>
+</div>
+</section>
+<section id="Train-end-to-end">
+<h3>Train end to end<a class="headerlink" href="#Train-end-to-end" title="Permalink to this headline"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from time import time
+from copy import deepcopy
+
+learning_rate = 1e-3
+epochs = 1000
+patience = None
+
+if not patience:
+    patience = epochs
+
+params = list(laplace_rep_func.parameters()) + list(encoder.parameters())
+optimizer = torch.optim.Adam(params, lr=learning_rate)
+loss_fn = torch.nn.MSELoss()
+
+best_loss = float(&quot;inf&quot;)
+waiting = 0
+
+for epoch in range(epochs):
+    iteration = 0
+    epoch_train_loss_it_cum = 0
+    start_time = time()
+    laplace_rep_func.train(), encoder.train()
+    for batch in dltrain:
+        optimizer.zero_grad()
+        trajs_to_encode = batch[
+            &quot;observed_data&quot;
+        ]  # (batch_size, t_observed_dim, observed_dim)
+        observed_tp = batch[&quot;observed_tp&quot;]  # (1, t_observed_dim)
+        p = encoder(
+            trajs_to_encode, observed_tp
+        )  # p is the latent tensor encoding the initial states
+        tp_to_predict = batch[&quot;tp_to_predict&quot;]
+        predictions = laplace_reconstruct(
+            laplace_rep_func, p, tp_to_predict, recon_dim=output_dim
+        )
+        loss = loss_fn(
+            torch.flatten(predictions), torch.flatten(batch[&quot;data_to_predict&quot;])
+        )
+        loss.backward()
+        torch.nn.utils.clip_grad_norm_(params, 1)
+        optimizer.step()
+        epoch_train_loss_it_cum += loss.item()
+        iteration += 1
+    epoch_train_loss = epoch_train_loss_it_cum / iteration
+    epoch_duration = time() - start_time
+
+    # Validation step
+    laplace_rep_func.eval(), encoder.eval()
+    cum_val_loss = 0
+    cum_val_batches = 0
+    for batch in dlval:
+        trajs_to_encode = batch[
+            &quot;observed_data&quot;
+        ]  # (batch_size, t_observed_dim, observed_dim)
+        observed_tp = batch[&quot;observed_tp&quot;]  # (1, t_observed_dim)
+        p = encoder(
+            trajs_to_encode, observed_tp
+        )  # p is the latent tensor encoding the initial states
+        tp_to_predict = batch[&quot;tp_to_predict&quot;]
+        predictions = laplace_reconstruct(
+            laplace_rep_func, p, tp_to_predict, recon_dim=output_dim
+        )
+        cum_val_loss += loss_fn(
+            torch.flatten(predictions), torch.flatten(batch[&quot;data_to_predict&quot;])
+        ).item()
+        cum_val_batches += 1
+    val_mse = cum_val_loss / cum_val_batches
+    if epoch % 100 == 0:
+        print(
+            &quot;[epoch={}] epoch_duration={:.2f} | train_loss={}\t| val_mse={}\t|&quot;.format(
+                epoch, epoch_duration, epoch_train_loss, val_mse
+            )
+        )
+
+    # Early stopping procedure
+    if val_mse &lt; best_loss:
+        best_loss = val_mse
+        best_laplace_rep_func = deepcopy(laplace_rep_func.state_dict())
+        best_encoder = deepcopy(encoder.state_dict())
+        waiting = 0
+    elif waiting &gt; patience:
+        break
+    else:
+        waiting += 1
+
+# Load best model
+laplace_rep_func.load_state_dict(best_laplace_rep_func)
+encoder.load_state_dict(best_encoder)
+
+# Test step
+laplace_rep_func.eval(), encoder.eval()
+cum_test_loss = 0
+cum_test_batches = 0
+for batch in dltest:
+    trajs_to_encode = batch[
+        &quot;observed_data&quot;
+    ]  # (batch_size, t_observed_dim, observed_dim)
+    observed_tp = batch[&quot;observed_tp&quot;]  # (1, t_observed_dim)
+    p = encoder(
+        trajs_to_encode, observed_tp
+    )  # p is the latent tensor encoding the initial states
+    tp_to_predict = batch[&quot;tp_to_predict&quot;]
+    predictions = laplace_reconstruct(laplace_rep_func, p, tp_to_predict)
+    cum_test_loss += loss_fn(
+        torch.flatten(predictions), torch.flatten(batch[&quot;data_to_predict&quot;])
+    ).item()
+    cum_test_batches += 1
+test_mse = cum_test_loss / cum_test_batches
+print(f&quot;test_mse= {test_mse}&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[epoch=0] epoch_duration=0.14 | train_loss=1.1861835888453893   | val_mse=1.0386548042297363    |
+[epoch=100] epoch_duration=0.05 | train_loss=0.26202377889837536        | val_mse=0.28236162662506104   |
+[epoch=200] epoch_duration=0.02 | train_loss=0.13380443517650878        | val_mse=0.13365934789180756   |
+[epoch=300] epoch_duration=0.02 | train_loss=0.08324573934078217        | val_mse=0.08065777271986008   |
+[epoch=400] epoch_duration=0.02 | train_loss=0.06641621195844241        | val_mse=0.06298608332872391   |
+[epoch=500] epoch_duration=0.02 | train_loss=0.055839442781039646       | val_mse=0.06235235556960106   |
+[epoch=600] epoch_duration=0.02 | train_loss=0.056307445147207806       | val_mse=0.07489385455846786   |
+[epoch=700] epoch_duration=0.02 | train_loss=0.051500603024448664       | val_mse=0.045799192041158676  |
+[epoch=800] epoch_duration=0.02 | train_loss=0.04638872029525893        | val_mse=0.04121057316660881   |
+[epoch=900] epoch_duration=0.02 | train_loss=0.05361673395548548        | val_mse=0.05730640888214111   |
+test_mse= 0.05796055868268013
+</pre></div></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../getting_started.html" class="btn btn-neutral float-left" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="user_ilt.html" class="btn btn-neutral float-right" title="User Guide Inverse Laplace Transform Algorithms" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Sam Holt.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
