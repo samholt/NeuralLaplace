@@ -1,0 +1,18 @@
+# YAML 1.2
+---
+abstract: |
+    "This library provides Inverse Laplace Transform (ILT) algorithms implemented in PyTorch. Backpropagation through differential equation (DE) solutions in the Laplace domain is supported using the Riemann stereographic projection for better global representation of the complex Laplace domain.
+
+    This is implemented in PyTorch, and fully supports running the library on the GPU."
+authors:
+  -
+    family-names: Holt
+    given-names: "Samuel"
+cff-version: "1.1.0"
+date-released: 2022-07-04
+license: MIT
+message: "PyTorch Implementation of Differentiable Laplace Reconstructions"
+repository-code: "https://github.com/samholt/NeuralLaplace"
+title: torchlaplace
+version: "0.0.1"
+...
