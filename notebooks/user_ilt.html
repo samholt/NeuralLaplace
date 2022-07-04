@@ -399,28 +399,28 @@ i.e. <span class="math notranslate nohighlight">\(|\mathcal{Q}(\mathcal{T})| = 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from time import strftime, time
-import numpy as np
-import torch
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">strftime</span><span class="p">,</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
 
-from torchlaplace.inverse_laplace import CME, DeHoog, FixedTablot, Fourier, Stehfest
+<span class="kn">from</span> <span class="nn">torchlaplace.inverse_laplace</span> <span class="kn">import</span> <span class="n">CME</span><span class="p">,</span> <span class="n">DeHoog</span><span class="p">,</span> <span class="n">FixedTablot</span><span class="p">,</span> <span class="n">Fourier</span><span class="p">,</span> <span class="n">Stehfest</span>
 
-time_points_to_reconstruct = 1000
-s_recon_terms = 33
-device = &quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;
+<span class="n">time_points_to_reconstruct</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">s_recon_terms</span> <span class="o">=</span> <span class="mi">33</span>
+<span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
 
 
-np.random.seed(999)
-torch.random.manual_seed(0)
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">999</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-t = torch.linspace(0.0001, 10.0, time_points_to_reconstruct).to(device)
+<span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="n">time_points_to_reconstruct</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
-# Cosine
-def fs(so):
-    return so / (so**2 + 1)  # Laplace solution
+<span class="c1"># Cosine</span>
+<span class="k">def</span> <span class="nf">fs</span><span class="p">(</span><span class="n">so</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">so</span> <span class="o">/</span> <span class="p">(</span><span class="n">so</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Laplace solution</span>
 
-def ft(t):
-    return torch.cos(t)  # Time solution
+<span class="k">def</span> <span class="nf">ft</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>  <span class="c1"># Time solution</span>
 </pre></div>
 </div>
 </div>
@@ -431,48 +431,48 @@ def ft(t):
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>decoder = FixedTablot(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-f_hat_t = decoder(fs, t)
-print(
-    &quot;FixedTablot Loss:\t{}\t\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">decoder</span> <span class="o">=</span> <span class="n">FixedTablot</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;FixedTablot Loss:</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
-# Split evaluation of s points out from that of the line integral (should be the exact same result as above)
-decoder = FixedTablot(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-s, _ = decoder.compute_s(t)
-fh = fs(s)
-f_hat_t = decoder.line_integrate(fh, t)
-print(
-    &quot;FixedTablot Loss (Split apart):\t{}\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<span class="c1"># Split evaluation of s points out from that of the line integral (should be the exact same result as above)</span>
+<span class="n">decoder</span> <span class="o">=</span> <span class="n">FixedTablot</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">compute_s</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">fh</span> <span class="o">=</span> <span class="n">fs</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">line_integrate</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;FixedTablot Loss (Split apart):</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
-decoder = FixedTablot(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-s, _ = decoder.compute_s(t, time_max=torch.max(t))
-fh = fs(s)
-f_hat_t = decoder.line_integrate(fh, t, time_max=t.max().item())
-print(
-    &quot;FixedTablot Loss (Split apart, Fixed Max Time):\t{}\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<span class="n">decoder</span> <span class="o">=</span> <span class="n">FixedTablot</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">s</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">compute_s</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">time_max</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="n">fh</span> <span class="o">=</span> <span class="n">fs</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">line_integrate</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">time_max</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;FixedTablot Loss (Split apart, Fixed Max Time):</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
-# Evaluate s points for one fixed time, maximum time (Less accurate, maybe more stable ?)
+<span class="c1"># Evaluate s points for one fixed time, maximum time (Less accurate, maybe more stable ?)</span>
 
-decoder = FixedTablot(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-f_hat_t = decoder(fs, t, time_max=torch.max(t))
-print(
-    &quot;FixedTablot Loss (Fixed Max Time):\t{}\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<span class="n">decoder</span> <span class="o">=</span> <span class="n">FixedTablot</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">time_max</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;FixedTablot Loss (Fixed Max Time):</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -495,25 +495,25 @@ FixedTablot Loss (Fixed Max Time):      1077.5205078125 | time: 0.00065994262695
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span>decoder = Stehfest(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-f_hat_t = decoder(fs, t)
-print(
-    &quot;Stehfest Loss:\t{}\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="n">decoder</span> <span class="o">=</span> <span class="n">Stehfest</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Stehfest Loss:</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
-decoder = Stehfest(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-s = decoder.compute_s(t)
-fh = fs(s)
-f_hat_t = decoder.line_integrate(fh, t)
-print(
-    &quot;Stehfest Loss (Split apart):\t{}\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<span class="n">decoder</span> <span class="o">=</span> <span class="n">Stehfest</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">compute_s</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">fh</span> <span class="o">=</span> <span class="n">fs</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">line_integrate</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Stehfest Loss (Split apart):</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -534,25 +534,25 @@ Stehfest Loss (Split apart):    25.583345413208008      | time: 0.00072598457336
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>decoder = Fourier(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-f_hat_t = decoder(fs, t)
-print(
-    &quot;Fourier (Un accelerated DeHoog) Loss:\t{}\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">decoder</span> <span class="o">=</span> <span class="n">Fourier</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Fourier (Un accelerated DeHoog) Loss:</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
-decoder = Fourier(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-s, T = decoder.compute_s(t)
-fh = fs(s)
-f_hat_t = decoder.line_integrate(fh, t, T)
-print(
-    &quot;Fourier (Un accelerated DeHoog) Loss (Split apart):\t{}\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<span class="n">decoder</span> <span class="o">=</span> <span class="n">Fourier</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">s</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">compute_s</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">fh</span> <span class="o">=</span> <span class="n">fs</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">line_integrate</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Fourier (Un accelerated DeHoog) Loss (Split apart):</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -572,47 +572,47 @@ Fourier (Un accelerated DeHoog) Loss (Split apart):     0.01714298129081726     
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>decoder = DeHoog(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-f_hat_t = decoder(fs, t)
-print(
-    &quot;DeHoog Loss:\t{}\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">decoder</span> <span class="o">=</span> <span class="n">DeHoog</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;DeHoog Loss:</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
-# Split evaluation of s points out from that of the line integral (should be the exact same result as above)
-decoder = DeHoog(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-s, T = decoder.compute_s(t)
-fh = fs(s)
-f_hat_t = decoder.line_integrate(fh, t, T)
-print(
-    &quot;DeHoog Loss (Split apart):\t{}\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<span class="c1"># Split evaluation of s points out from that of the line integral (should be the exact same result as above)</span>
+<span class="n">decoder</span> <span class="o">=</span> <span class="n">DeHoog</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">s</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">compute_s</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">fh</span> <span class="o">=</span> <span class="n">fs</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">line_integrate</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;DeHoog Loss (Split apart):</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
-# Single line integral
-decoder = DeHoog(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-s = decoder.compute_fixed_s(torch.max(t))
-fh = fs(s)
-f_hat_t = decoder.fixed_line_integrate(fh, t, torch.max(t))
-print(
-    &quot;DeHoog Loss (Fixed Line Integrate):\t{}\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<span class="c1"># Single line integral</span>
+<span class="n">decoder</span> <span class="o">=</span> <span class="n">DeHoog</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">compute_fixed_s</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="n">fh</span> <span class="o">=</span> <span class="n">fs</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">fixed_line_integrate</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;DeHoog Loss (Fixed Line Integrate):</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
-decoder = DeHoog(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-f_hat_t = decoder(fs, t, time_max=torch.max(t))
-print(
-    &quot;DeHoog Loss (Fixed Max Time):\t{}\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<span class="n">decoder</span> <span class="o">=</span> <span class="n">DeHoog</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">time_max</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;DeHoog Loss (Fixed Max Time):</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -634,25 +634,25 @@ DeHoog Loss (Fixed Max Time):   0.03613712266087532     | time: 0.01252031326293
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>decoder = CME(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-f_hat_t = decoder(fs, t)
-print(
-    &quot;CME Loss:\t{}\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">decoder</span> <span class="o">=</span> <span class="n">CME</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="p">(</span><span class="n">fs</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;CME Loss:</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
-decoder = CME(ilt_reconstruction_terms=s_recon_terms).to(device)
-t0 = time()
-s, T = decoder.compute_s(t)
-fh = fs(s)
-f_hat_t = decoder.line_integrate(fh, t, T)
-print(
-    &quot;CME Loss (Split apart):\t{}\t| time: {}&quot;.format(
-        np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
-    )
-)
+<span class="n">decoder</span> <span class="o">=</span> <span class="n">CME</span><span class="p">(</span><span class="n">ilt_reconstruction_terms</span><span class="o">=</span><span class="n">s_recon_terms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">s</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">compute_s</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">fh</span> <span class="o">=</span> <span class="n">fs</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">f_hat_t</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">line_integrate</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;CME Loss (Split apart):</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| time: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()(</span><span class="n">ft</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">f_hat_t</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()),</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
