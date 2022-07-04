@@ -64,7 +64,7 @@ setuptools.setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
-        "Intended Audience :: Dynamical System and Time Series Modelling",
+        "Intended Audience :: Science/Research",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
