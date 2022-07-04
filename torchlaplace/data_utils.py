@@ -2,7 +2,6 @@
 from pathlib import Path
 
 import numpy as np
-import sklearn as sk
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -424,6 +423,8 @@ def compute_loss_all_batches(
                 )
 
                 # Cannot compute AUC with only 1 class
+                import sklearn as sk
+
                 total["acc"] = sk.metrics.roc_auc_score(
                     all_test_labels.cpu().numpy().reshape(-1),
                     classif_predictions.cpu().numpy().reshape(-1),
