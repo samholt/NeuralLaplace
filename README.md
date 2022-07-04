@@ -1,5 +1,7 @@
 # PyTorch Implementation of Differentiable Laplace Reconstructions
 
+[![Documentation Status](https://samholt.github.io/NeuralLaplace/)](https://samholt.github.io/NeuralLaplace/)
+
 This library provides Inverse Laplace Transform (ILT) algorithms implemented in PyTorch. Backpropagation through differential equation (DE) solutions in the Laplace domain is supported using the Riemann stereographic projection for better global representation of the complex Laplace domain. For usage for DE representations in the Laplace domain in deep learning applications, see reference [[1]](https://arxiv.org/abs/2206.04843).
 
 ## Installation
@@ -80,7 +82,7 @@ For most problems, good choices are the default `fourier`. However other ILT alg
 
 ## Detailed documentation
 
-For detailed documentation see the official docs.
+For detailed documentation see the [official docs](https://samholt.github.io/NeuralLaplace/).
 
 ## Frequently Asked Questions
 
