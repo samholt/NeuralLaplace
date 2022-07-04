@@ -1,3 +1,4 @@
 furo==2021.11.16
 sphinx-panels
 nbsphinx
+sphinx-rtd-theme
