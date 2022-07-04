@@ -3,4 +3,3 @@ sphinx-panels
 nbsphinx
 sphinx-rtd-theme
 torchlaplace
-pandoc
