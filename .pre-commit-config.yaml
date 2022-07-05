@@ -33,7 +33,7 @@ repos:
   hooks:
   - id: flake8
     args: [
-        "--max-line-length=240",
+        "--max-line-length=400",
         "--extend-ignore=E203,W503"
     ]
 - repo: local

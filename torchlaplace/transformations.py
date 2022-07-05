@@ -26,7 +26,8 @@ def spherical_riemann_to_complex(theta, phi):
 
     """
     # dim(phi) == dim(theta), takes in spherical co-ordinates returns comlex real & imaginary parts
-    assert phi.shape == theta.shape
+    if phi.shape != theta.shape:
+        raise ValueError("Invalid phi theta shapes")
     r = torch.tan(phi / 2 + torch.pi / 4)
     s_real = r * torch.cos(theta)
     s_imag = r * torch.sin(theta)
@@ -54,7 +55,8 @@ def complex_to_spherical_riemann(s_real, s_imag):
     """
 
     # din(s_real) == dim(s_imag), takes in real & complex parts returns spherical co-ordinates
-    assert s_real.shape == s_imag.shape
+    if s_real.shape != s_imag.shape:
+        raise ValueError("Invalid s_real s_imag shapes")
     s_abs_2 = s_imag**2 + s_real**2
     # Handle points at infinity
     phi_r_int = torch.where(

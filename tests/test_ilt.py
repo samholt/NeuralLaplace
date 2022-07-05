@@ -97,5 +97,5 @@ def test_all_ilts():
     decoder = CME(ilt_reconstruction_terms=s_recon_terms).to(device)
     s, T = decoder.compute_s(t)
     fh = fs(s)
-    f_hat_t = decoder.line_integrate(fh, t, T)
+    f_hat_t = decoder.line_integrate(fh, T)
     loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())

@@ -138,14 +138,14 @@ def _check_inputs(
     ilt_reconstruction_terms,
     options,
 ):
-    assert isinstance(
-        laplace_rep_func, nn.Module
-    ), "laplace_rep_func must be a descendant of torch.nn.Module"
-    assert isinstance(p, Tensor), "p must be a torch.Tensor type"
-    assert isinstance(t, Tensor), "t must be a torch.Tensor type"
-    assert isinstance(
-        use_sphere_projection, bool
-    ), "use_sphere_projection must be a bool type"
+    if not isinstance(laplace_rep_func, nn.Module):
+        raise RuntimeError("laplace_rep_func must be a descendant of torch.nn.Module")
+    if not isinstance(p, Tensor):
+        raise RuntimeError("p must be a torch.Tensor type")
+    if not isinstance(t, Tensor):
+        raise RuntimeError("t must be a torch.Tensor type")
+    if not isinstance(use_sphere_projection, bool):
+        raise RuntimeError("use_sphere_projection must be a bool type")
     if ilt_algorithm not in ILT_ALGORITHMS:
         raise ValueError(
             'Invalid ILT algorithm "{}". Must be one of {}'.format(

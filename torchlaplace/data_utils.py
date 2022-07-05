@@ -189,7 +189,8 @@ def linspace_vector(start, end, n_points):
     # start is either one value or a vector
     size = np.prod(start.size())
 
-    assert start.size() == end.size()
+    if start.size() != end.size():
+        raise ValueError("Invalid start end size")
     if size == 1:
         # start and end are 1d-tensors
         res = torch.linspace(start, end, n_points)
@@ -464,10 +465,12 @@ def check_mask(data, mask):
     n_ones = torch.sum(mask == 1.0).cpu().numpy()
 
     # mask should contain only zeros and ones
-    assert (n_zeros + n_ones) == np.prod(list(mask.size()))
+    if (n_zeros + n_ones) != np.prod(list(mask.size())):
+        raise ValueError("Invalid one zero mask")
 
     # all masked out elements should be zeros
-    assert torch.sum(data[mask == 0.0] != 0.0) == 0
+    if torch.sum(data[mask == 0.0] != 0.0) != 0:
+        raise ValueError("Invalid mask sum")
 
 
 def create_classifier(z0_dim, n_labels):
@@ -574,7 +577,8 @@ class VAE_Baseline(nn.Module):
         fp_mu, fp_std, fp_enc = info["first_point"]
         fp_distr = Normal(fp_mu, fp_std)
 
-        assert torch.sum(fp_std < 0) == 0.0
+        if torch.sum(fp_std < 0) != 0.0:
+            raise ValueError("Invalid fp_std")
 
         kldiv_z0 = kl_divergence(fp_distr, self.z0_prior)
 
@@ -666,7 +670,8 @@ def get_mask(x):
     mask = x[:, :, n_data_dims:]
     check_mask(x[:, :, :n_data_dims], mask)
     mask = (torch.sum(mask, -1, keepdim=True) > 0).float()
-    assert not torch.isnan(mask).any()
+    if torch.isnan(mask).any():
+        raise ValueError("Mask contains NaNs")
     return mask.squeeze(0)
 
 
@@ -703,8 +708,10 @@ class Encoder_z0_ODE_RNN(nn.Module):
         init_network_weights(self.transform_z0)
 
     def forward(self, data, time_steps, run_backwards=True, save_info=False):
-        assert not torch.isnan(data).any()
-        assert not torch.isnan(time_steps).any()
+        if torch.isnan(data).any():
+            raise ValueError("Mask should not contain NaNs")
+        if torch.isnan(time_steps).any():
+            raise ValueError("Time steps should not contain NaNs")
 
         n_traj, n_tp, n_dims = data.size()
         latent = self.run_odernn(data, time_steps, run_backwards)
@@ -806,8 +813,10 @@ def compute_binary_CE_loss(label_predictions, mortality_label):
             "Warning: all examples in a batch belong to the same class -- please increase the batch size."
         )
 
-    assert not torch.isnan(label_predictions).any()
-    assert not torch.isnan(mortality_label).any()
+    if torch.isnan(label_predictions).any():
+        raise ValueError("label_predictions contain NaNs")
+    if torch.isnan(mortality_label).any():
+        raise ValueError("mortality_label contains NaNs")
 
     # For each trajectory, we get n_traj_samples samples from z0 -- compute loss on all of them
     mortality_label = mortality_label.repeat(n_traj_samples, 1)
@@ -825,9 +834,6 @@ def compute_multiclass_CE_loss(label_predictions, true_label, mask):
         label_predictions = label_predictions.unsqueeze(0)
 
     n_traj_samples, n_traj, n_tp, n_dims = label_predictions.size()
-
-    # assert(not torch.isnan(label_predictions).any())
-    # assert(not torch.isnan(true_label).any())
 
     # For each trajectory, we get n_traj_samples samples from z0 -- compute loss on all of them
     true_label = true_label.repeat(n_traj_samples, 1, 1)
@@ -851,7 +857,8 @@ def compute_multiclass_CE_loss(label_predictions, true_label, mask):
     label_mask = label_mask.reshape(n_traj_samples * n_traj * n_tp, 1)
 
     if (label_predictions.size(-1) > 1) and (true_label.size(-1) > 1):
-        assert label_predictions.size(-1) == true_label.size(-1)
+        if label_predictions.size(-1) != true_label.size(-1):
+            raise RuntimeError("Invalid label_predictions shape")
         # targets are in one-hot encoding -- convert to indices
         _, true_label = true_label.max(-1)
 
@@ -887,8 +894,6 @@ def compute_masked_likelihood(mu, data, mask, likelihood_func):
                     data[i, k, :, j], mask[i, k, :, j].bool()
                 )
 
-                # assert(torch.sum(data_masked == 0.) < 10)
-
                 mu_masked = torch.masked_select(mu[i, k, :, j], mask[i, k, :, j].bool())
                 log_prob = likelihood_func(mu_masked, data_masked, indices=(i, k, j))
                 res.append(log_prob)
@@ -917,8 +922,8 @@ def masked_gaussian_log_density(mu, data, obsrv_std, mask=None):
 
     n_traj_samples, n_traj, n_timepoints, n_dims = mu.size()
 
-    assert data.size()[-1] == n_dims
-
+    if data.size()[-1] != n_dims:
+        raise ValueError("Invalid data size")
     # Shape after permutation: [n_traj, n_traj_samples, n_timepoints, n_dims]
     if mask is None:
         mu_flat = mu.reshape(n_traj_samples * n_traj, n_timepoints * n_dims)
@@ -962,7 +967,8 @@ def compute_mse(mu, data, mask=None):
         data = data.unsqueeze(0)
 
     n_traj_samples, n_traj, n_timepoints, n_dims = mu.size()
-    assert data.size()[-1] == n_dims
+    if data.size()[-1] != n_dims:
+        raise ValueError("Invalid data size")
 
     # Shape after permutation: [n_traj, n_traj_samples, n_timepoints, n_dims]
     if mask is None:
