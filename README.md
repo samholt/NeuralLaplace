@@ -22,6 +22,9 @@ To install the latest on GitHub:
 pip install git+https://github.com/samholt/torchlaplace
 ```
 
+## Tutorials
+1. Tutorial: Laplace Reconstruct [https://colab.research.google.com/assets/colab-badge.svg](https://colab.research.google.com/drive/1JCakl2DFzHnBh_C6YXBpnGYKUmBVPN3Y?usp=sharing)
+2. Tutorial: Inverse Laplace Transform Algorithms [https://colab.research.google.com/assets/colab-badge.svg](https://colab.research.google.com/drive/1ZNAA9CdXbA8B-Vp3r5Zqx3mM4CojtI6V?usp=sharing)
 ## Examples
 
 Examples are placed in the [`examples`](./examples) directory.
