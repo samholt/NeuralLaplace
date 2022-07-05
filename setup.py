@@ -6,7 +6,7 @@ def read(fname: str) -> str:
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 def find_version() -> str:
-    version_file = read("torchlaplace/__init__.py")
+    version_file = read("torchlaplace/version.py")
     version_re = r"__version__ = \"(?P<version>.+)\""
     version_raw = re.match(version_re, version_file)
 
