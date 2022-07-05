@@ -26,13 +26,12 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-            pip install -r prereq.txt
             pip install .[testing]
       - name: pre-commit validation
-        run: pre-commit run --files src/*
+        run: pre-commit run --files torchlaplace/*
       - name: Security checks
         run: |
-            bandit -r src/*
+            bandit -r torchlaplace/*
 
   Library:
     needs: [Linter]

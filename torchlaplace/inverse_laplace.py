@@ -714,7 +714,8 @@ class DeHoog(InverseLaplaceTransformAlgorithmBase):
         else:
             tmax = tv
         if Ti is not None:
-            assert type(Ti) == self.torch_float_datatype
+            if type(Ti) != self.torch_float_datatype:
+                raise ValueError("Invalid Ti type")
             T = Ti
         else:
             T = tmax * self.scale
@@ -916,7 +917,8 @@ class DeHoog(InverseLaplaceTransformAlgorithmBase):
         else:
             tmax = t
         if Ti is not None:
-            assert type(Ti) == self.torch_float_datatype
+            if type(Ti) != self.torch_float_datatype:
+                raise ValueError("Invalid Ti types")
             T = Ti
         else:
             T = tmax * self.scale
@@ -1137,7 +1139,8 @@ class Fourier(InverseLaplaceTransformAlgorithmBase):
         else:
             tmax = t  # + self.eps
         if Ti is not None:
-            assert type(Ti) == self.torch_float_datatype
+            if type(Ti) != self.torch_float_datatype:
+                raise ValueError("Invalid Ti shapes")
             T = Ti
         else:
             T = tmax * self.scale
@@ -1270,7 +1273,8 @@ class Fourier(InverseLaplaceTransformAlgorithmBase):
         else:
             tmax = t
         if Ti is not None:
-            assert type(Ti) == self.torch_float_datatype
+            if type(Ti) != self.torch_float_datatype:
+                raise ValueError("Invalid Ti type")
             T = Ti
         else:
             T = tmax * self.scale
