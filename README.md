@@ -107,11 +107,13 @@ differential equations in the laplace domain." _International Conference on Mach
 If you found this library useful in your research, please consider citing.
 
 ```
-@article{holt2022neural,
+@inproceedings{holt2022neural,
   title={Neural Laplace: Learning diverse classes of differential equations in the Laplace domain},
-  author={Holt, Samuel and Qian, Zhaozhi and van der Schaar, Mihaela},
-  journal={arXiv preprint arXiv:2206.04843},
-  year={2022}
+  author={Holt, Samuel I and Qian, Zhaozhi and van der Schaar, Mihaela},
+  booktitle={International Conference on Machine Learning},
+  pages={8811--8832},
+  year={2022},
+  organization={PMLR}
 }
 
 ```
