@@ -44,6 +44,7 @@ patience = args.patience
 
 device = torch.device("cuda:" + str(args.gpu) if torch.cuda.is_available() else "cpu")
 
+
 # Model (encoder and Laplace representation func)
 class ReverseGRUEncoder(nn.Module):
     # Encodes observed trajectory into latent vector

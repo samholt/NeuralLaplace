@@ -1355,8 +1355,12 @@ class CME(InverseLaplaceTransformAlgorithmBase):
             )
             * params["mu1"]
         )
-        self.eta = complex_numpy_to_complex_torch(eta).to(device)
-        self.beta = complex_numpy_to_complex_torch(beta).to(device)
+        self.eta = (
+            complex_numpy_to_complex_torch(eta).to(torch_complex_datatype).to(device)
+        )
+        self.beta = (
+            complex_numpy_to_complex_torch(beta).to(torch_complex_datatype).to(device)
+        )
 
     def compute_s(self, ti):
         t = real_vector_to_complex(ti)
@@ -1553,7 +1557,7 @@ if __name__ == "__main__":
     t0 = time()
     s, T = decoder.compute_s(t)
     fh = fs(s)
-    f_hat_t = decoder.line_integrate(fh, t, T)
+    f_hat_t = decoder.line_integrate(fh, t)
     print(
         "CME Loss (Split apart):\t{}\t| time: {}".format(
             np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0

@@ -39,6 +39,7 @@ patience = args.patience
 
 device = torch.device("cuda:" + str(args.gpu) if torch.cuda.is_available() else "cpu")
 
+
 # Data
 def sawtooth(trajectories_to_sample=100, t_nsamples=200):
     # Toy sawtooth waveform. Simple to generate, for Differential Equation Datasets see datasets.py (Note more complex DE take time to sample from, in some cases minutes).
