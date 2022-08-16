@@ -718,7 +718,7 @@ class DeHoog(InverseLaplaceTransformAlgorithmBase):
                 raise ValueError("Invalid Ti type")
             T = Ti
         else:
-            T = tmax * self.scale
+            T = (tmax * self.scale).to(self.torch_complex_datatype)
         gamma = self.alpha - torch.log(self.tol) / (self.scale * T)
         si = torch.matmul(
             1 / T.view(-1, 1),
@@ -921,7 +921,7 @@ class DeHoog(InverseLaplaceTransformAlgorithmBase):
                 raise ValueError("Invalid Ti types")
             T = Ti
         else:
-            T = tmax * self.scale
+            T = (tmax * self.scale).to(self.torch_complex_datatype)
         gamma = self.alpha - torch.log(self.tol) / (self.scale * T)
         si = torch.matmul(
             1 / T.view(-1, 1),
@@ -1143,7 +1143,7 @@ class Fourier(InverseLaplaceTransformAlgorithmBase):
                 raise ValueError("Invalid Ti shapes")
             T = Ti
         else:
-            T = tmax * self.scale
+            T = (tmax * self.scale).to(self.torch_complex_datatype)
         gamma = self.alpha - torch.log(self.tol) / (self.scale * T)
         si = torch.matmul(1 / T.view(-1, 1), 1j * torch.pi * self.k.view(1, -1))
         return gamma.view(-1, 1) + si, T
@@ -1277,7 +1277,7 @@ class Fourier(InverseLaplaceTransformAlgorithmBase):
                 raise ValueError("Invalid Ti type")
             T = Ti
         else:
-            T = tmax * self.scale
+            T = (tmax * self.scale).to(self.torch_complex_datatype)
         gamma = self.alpha - torch.log(self.tol) / (self.scale * T)
         si = torch.matmul(1 / T.view(-1, 1), 1j * torch.pi * self.k.view(1, -1))
         fp = fs(gamma.view(-1, 1) + si)

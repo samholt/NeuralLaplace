@@ -87,7 +87,10 @@ def laplace_reconstruct(
             ilt_reconstruction_terms=ilt_reconstruction_terms, **options
         )
     t = torch.squeeze(t)
-    time_dim = t.shape[0]
+    if len(t.shape) == 0:
+        time_dim = 1
+    else:
+        time_dim = t.shape[0]
     batch_dim = p.shape[0]
     s, T = ilt.compute_s(t)
     T = T
