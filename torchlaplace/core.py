@@ -172,7 +172,7 @@ def _check_inputs(
                 ilt_algorithm, '{"' + '", "'.join(ILT_ALGORITHMS.keys()) + '"}.'
             )
         )
-    if not ilt_reconstruction_terms % 2:
+    if (ilt_reconstruction_terms % 2 == 0) and (ilt_algorithm != 'cme'):
         raise ValueError(
             'Invalid "ilt_reconstruction_terms", must be an odd input number. Was given an even number of {}'.format(
                 ilt_reconstruction_terms
