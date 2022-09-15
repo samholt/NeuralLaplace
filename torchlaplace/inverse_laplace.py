@@ -1219,6 +1219,32 @@ class Fourier(InverseLaplaceTransformAlgorithmBase):
             )
         ).real
 
+    def line_integrate_all_multi_batch_time(self, fp, ti, T):
+        r"""Reconstruct trajectories :math:`\mathbf{x}(t)` for `fp`, Laplace representations evaluated at `s` points from the input `ti` points, :math:`t`, using the selected ILT algorithm (takes batch input of `fp`).
+
+        Args:
+            fp (Tensor): Laplace representation evaluated at `s` points derived from the input time points `ti`. `fp` has shape :math:`(\text{BatchSize}, \text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})`
+            ti (Tensor): time points to reconstruct trajectory for of shape :math:`(\text{BatchSize}, \text{SeqLen})`.
+            T (Tensor): time points to reconstruct trajectory for used as the reconstruction of times up to `T` time point of shape :math:`(\text{SeqLen})`. Best practice for most ILT algorithms is
+            to set `T = ti`, for the ILT algorithms that rely on `T`.
+
+        Returns:
+            Tensor of reconstructions :math:`\mathbf{x}(t)` of shape :math:`(\text{BatchSize}, \text{SeqLen}, d_{\text{obs}})`. :math:`\text{SeqLen}` dimension corresponds to the different time
+            points :math:`t`. This tensor of reconstructions contains the solved value of :math:`\mathbf{x}` for each desired time point in `t`.
+
+        """
+        # Input shapes
+        # fp [batch, times, data_dims, approximation_terms * 2 + 1]
+        # ti [times]
+        # T [times]
+        # Returns
+        # [batch, times, data_dims]
+        t = real_vector_to_complex(ti)  # Could be slowing down ?
+        gamma = self.alpha - torch.log(self.tol) / (self.scale * T)
+        return (
+            ((1 / T) * torch.exp(gamma * t)).view(fp.shape[0], fp.shape[1], 1)* (fp[:, :, :, 0] / 2.0+ torch.sum(fp[:, :, :, 1:] * torch.exp(torch.matmul((t / T).view(-1, 1), 1j * self.k[1:].view(1, -1) * torch.pi)).view(fp.shape[0], fp.shape[1], 1, fp.shape[3]-1),3,))
+        ).real
+
     def line_integrate_multi(self, fp, ti, T):
         r"""Reconstruct trajectories :math:`\mathbf{x}(t)` for `fp`, Laplace representations evaluated at `s` points from the input `ti` points, :math:`t`, using the selected ILT algorithm.
 
@@ -1381,6 +1407,30 @@ class CME(InverseLaplaceTransformAlgorithmBase):
         # t = real_vector_to_complex(ti)
         return (
             (1 / T).view(1, -1, 1) * torch.matmul(fp, self.eta.view(-1, 1)).squeeze(-1)
+        ).real
+
+    def line_integrate_all_multi_batch_time(self, fp, ti, T):
+        r"""Reconstruct trajectories :math:`\mathbf{x}(t)` for `fp`, Laplace representations evaluated at `s` points from the input `ti` points, :math:`t`, using the selected ILT algorithm (takes batch input of `fp`).
+
+        Args:
+            fp (Tensor): Laplace representation evaluated at `s` points derived from the input time points `ti`. `fp` has shape :math:`(\text{BatchSize}, \text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})`
+            ti (Tensor): time points to reconstruct trajectory for of shape :math:`(\text{BatchSize}, \text{SeqLen})`.
+            T (Tensor): time points to reconstruct trajectory for used as the reconstruction of times up to `T` time point of shape :math:`(\text{SeqLen})`. Best practice for most ILT algorithms is
+            to set `T = ti`, for the ILT algorithms that rely on `T`.
+
+        Returns:
+            Tensor of reconstructions :math:`\mathbf{x}(t)` of shape :math:`(\text{BatchSize}, \text{SeqLen}, d_{\text{obs}})`. :math:`\text{SeqLen}` dimension corresponds to the different time
+            points :math:`t`. This tensor of reconstructions contains the solved value of :math:`\mathbf{x}` for each desired time point in `t`.
+
+        """
+        # Input shapes
+        # fp [batch, times, data_dims, approximation_terms * 2 + 1]
+        # ti [times]
+        # T [times]
+        # Returns
+        # [batch, times, data_dims]
+        return (
+            (1 / T).view(T.shape[0], T.shape[1], 1) * torch.matmul(fp, self.eta.view(-1, 1)).view(fp.shape[0], fp.shape[1], fp.shape[2])
         ).real
 
     def forward(self, fs, ti):

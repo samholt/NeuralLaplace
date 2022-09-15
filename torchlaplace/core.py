@@ -29,6 +29,8 @@ def laplace_reconstruct(
     use_sphere_projection=True,
     ilt_reconstruction_terms=33,
     options=None,
+    compute_deriv=False,
+    x0=None,
 ) -> Tensor:
     r"""Reconstruct trajectories :math:`\mathbf{x}(t)` for a system of Laplace representations.
 
@@ -86,13 +88,16 @@ def laplace_reconstruct(
         ilt = ILT_ALGORITHMS[ilt_algorithm](
             ilt_reconstruction_terms=ilt_reconstruction_terms, **options
         )
-    t = torch.squeeze(t)
     if len(t.shape) == 0:
         time_dim = 1
-    else:
+    elif len(t.shape) == 1:
         time_dim = t.shape[0]
+    elif len(t.shape) == 2:
+        time_dim = t.shape[1]
+    else:
+        raise ValueError(f'Unsupported time tensor shape, please use (batch, time_dim)')
     batch_dim = p.shape[0]
-    s, T = ilt.compute_s(t)
+    s, T = ilt.compute_s(torch.squeeze(t))
     T = T
     if use_sphere_projection:
         thetam, phim = complex_to_spherical_riemann(
@@ -102,13 +107,22 @@ def laplace_reconstruct(
         phim = torch.reshape(phim, s.imag.shape)
         sph_coords = torch.cat((thetam, phim), 1)
         s_terms_dim = thetam.shape[1]
-        inputs = torch.cat(
-            (
-                sph_coords.view(1, time_dim, -1).repeat(batch_dim, 1, 1),
-                p.view(batch_dim, 1, -1).repeat(1, time_dim, 1),
-            ),
-            2,
-        )
+        if len(t.shape) == 2:
+            inputs = torch.cat(
+                (
+                    sph_coords.view(batch_dim, time_dim, -1),
+                    p.view(batch_dim, 1, -1).repeat(1, time_dim, 1),
+                ),
+                2,
+            )
+        else:
+            inputs = torch.cat(
+                (
+                    sph_coords.view(1, time_dim, -1).repeat(batch_dim, 1, 1),
+                    p.view(batch_dim, 1, -1).repeat(1, time_dim, 1),
+                ),
+                2,
+            )
         theta, phi = laplace_rep_func(inputs)
         sr = spherical_to_complex(theta, phi)
         ss = sr.view(-1, time_dim, recon_dim, s_terms_dim)
@@ -128,7 +142,10 @@ def laplace_reconstruct(
         )
         sr = torch.reshape(so, s_real.shape)
         ss = sr.view(-1, time_dim, recon_dim, s_terms_dim)
-    return ilt.line_integrate_all_multi(ss, t, T)
+    if len(t.shape) == 2:
+        return ilt.line_integrate_all_multi_batch_time(ss, t.view(-1,time_dim), T.view(-1,time_dim))
+    else:
+        return ilt.line_integrate_all_multi(ss, torch.squeeze(t), T)
 
 
 def _check_inputs(
@@ -165,13 +182,13 @@ def _check_inputs(
         options = {}
     else:
         options = options.copy()
-    to = torch.squeeze(t)
-    if len(to.shape) >= 2:
-        raise NotImplementedError(
-            "Handling (MiniBatchSize, SeqLen) is not implemented yet. Coming soon. If urgent post an issue on GitHub"
-        )
-    if len(p.shape) >= 3:
-        p = torch.squeeze(p)
+    # to = torch.squeeze(t)
+    # if len(to.shape) >= 2:
+    #     raise NotImplementedError(
+    #         "Handling (MiniBatchSize, SeqLen) is not implemented yet. Coming soon. If urgent post an issue on GitHub"
+    #     )
+    # if len(p.shape) >= 3:
+        # p = torch.squeeze(p)
     if recon_dim is None:
         recon_dim = p.shape[1]
     return options, recon_dim, p
