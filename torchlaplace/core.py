@@ -8,13 +8,14 @@ Laplace Reconstructions
 import torch
 from torch import Tensor, nn
 
-from .inverse_laplace import CME, DeHoog, FixedTablot, Fourier, Stehfest
+from .inverse_laplace import CME, DeHoog, FixedTablot, Fourier, Stehfest, Euler
 from .transformations import complex_to_spherical_riemann, spherical_to_complex
 
 ILT_ALGORITHMS = {
     "fourier": Fourier,
     "dehoog": DeHoog,
     "cme": CME,
+    "euler": Euler,
     "fixed_tablot": FixedTablot,
     "stehfest": Stehfest,
 }

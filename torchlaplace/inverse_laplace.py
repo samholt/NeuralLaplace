@@ -1324,6 +1324,235 @@ class Fourier(InverseLaplaceTransformAlgorithmBase):
             )
         ).real
 
+class Gaver(InverseLaplaceTransformAlgorithmBase):
+    r"""Inherits from :meth:`torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase`.
+
+    Reconstruct trajectories :math:`\mathbf{x}(t)` for a system of Laplace representations.
+    Given a parameterized Laplace representation function :math:`\mathbf{F}(\mathbf{s})`.
+
+    Gaver method, uses a similar form to that of the Fourier Series Inverse, approximating ILT Equation with the trapezoidal rule. This uses the form of,
+
+    .. math::
+        \begin{aligned}
+            \mathbf{x}(t) \approx \frac{1}{T}\sum_{k=1}^{2N} \eta_k F \left(\frac{\beta_k}{T}\right)
+        \end{aligned}
+
+    The coefficients :math:`\eta_k, \beta_k` are determined by the Gaver procedure, in the Abate-Whitt framework.
+    
+    .. note::
+        Reference: Horváth, G., Horváth, I., Almousa, S. A.-D., and Telek, M. Numerical inverse laplace transformation using concentrated matrix exponential distributions. Performance Evaluation, 137:102067, 2020.
+
+    Args:
+        ilt_reconstruction_terms (int): number of ILT reconstruction terms, i.e. the number of complex :math:`s` points in `fs` to reconstruct a single time point.
+        torch_float_datatype (Torch.dtype): Torch float datatype to use internally in the ILT algorithm, and also output data type of :math:`\mathbf{x}(t)`. Default `torch.float32`.
+        torch_complex_datatype (Torch.dtype): Torch complex datatype to use internally in the ILT algorithm. Default `torch.cfloat`.
+    """
+
+    def __init__(
+        self,
+        ilt_reconstruction_terms=33,
+        torch_float_datatype=TORCH_FLOAT_DATATYPE,
+        torch_complex_datatype=TORCH_COMPLEX_DATATYPE,
+    ):
+        super().__init__(
+            ilt_reconstruction_terms, torch_float_datatype, torch_complex_datatype
+        )
+        M = int((ilt_reconstruction_terms - 1) / 2)
+        self.M = M
+        max_fn_evals = ilt_reconstruction_terms
+        if max_fn_evals%2==1:
+            max_fn_evals -= 1
+        ndiv2 = int(max_fn_evals/2)
+        eta = np.zeros(max_fn_evals);
+        beta = np.zeros(max_fn_evals);
+        logsum = np.concatenate(([0], np.cumsum(np.log(np.arange(1,max_fn_evals+1)))))
+        for k in range(1,max_fn_evals+1):
+            inside_sum = 0.0;
+            for j in range(np.floor((k+1)/2).astype(np.int32), min(k,ndiv2)+1):
+                inside_sum += np.exp((ndiv2+1)*np.log(j) - logsum[ndiv2-j] + logsum[2*j] - 2*logsum[j] - logsum[k-j] - logsum[2*j-k])
+            eta[k-1] = np.log(2.0)*(-1)**(k+ndiv2)*inside_sum
+            beta[k-1] = k * np.log(2.0)
+        self.eta = (
+            complex_numpy_to_complex_torch(eta).to(torch_complex_datatype).to(device)
+        )
+        self.beta = (
+            complex_numpy_to_complex_torch(beta).to(torch_complex_datatype).to(device)
+        )
+
+    def compute_s(self, ti):
+        t = real_vector_to_complex(ti)
+        s = torch.matmul((1 / t).view(-1, 1), self.beta.view(1, -1))
+        return s, t
+
+    def line_integrate(self, fp, ti):
+        # t = real_vector_to_complex(ti)
+        return (torch.matmul(fp, self.eta.view(-1, 1)).view(-1) / ti).real
+
+    def line_integrate_all_multi(self, fp, ti, T):
+        # Input shapes
+        # fp [batch, times, data_dims, approximation_terms * 2 + 1]
+        # ti [times]
+        # T [times]
+        # Returns
+        # [batch, times, data_dims]
+        # t = real_vector_to_complex(ti)
+        return (
+            (1 / T).view(1, -1, 1) * torch.matmul(fp, self.eta.view(-1, 1)).squeeze(-1)
+        ).real
+
+    def line_integrate_all_multi_batch_time(self, fp, ti, T):
+        r"""Reconstruct trajectories :math:`\mathbf{x}(t)` for `fp`, Laplace representations evaluated at `s` points from the input `ti` points, :math:`t`, using the selected ILT algorithm (takes batch input of `fp`).
+
+        Args:
+            fp (Tensor): Laplace representation evaluated at `s` points derived from the input time points `ti`. `fp` has shape :math:`(\text{BatchSize}, \text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})`
+            ti (Tensor): time points to reconstruct trajectory for of shape :math:`(\text{BatchSize}, \text{SeqLen})`.
+            T (Tensor): time points to reconstruct trajectory for used as the reconstruction of times up to `T` time point of shape :math:`(\text{SeqLen})`. Best practice for most ILT algorithms is
+            to set `T = ti`, for the ILT algorithms that rely on `T`.
+
+        Returns:
+            Tensor of reconstructions :math:`\mathbf{x}(t)` of shape :math:`(\text{BatchSize}, \text{SeqLen}, d_{\text{obs}})`. :math:`\text{SeqLen}` dimension corresponds to the different time
+            points :math:`t`. This tensor of reconstructions contains the solved value of :math:`\mathbf{x}` for each desired time point in `t`.
+
+        """
+        # Input shapes
+        # fp [batch, times, data_dims, approximation_terms * 2 + 1]
+        # ti [times]
+        # T [times]
+        # Returns
+        # [batch, times, data_dims]
+        return (
+            (1 / T).view(T.shape[0], T.shape[1], 1) * torch.matmul(fp, self.eta.view(-1, 1)).view(fp.shape[0], fp.shape[1], fp.shape[2])
+        ).real
+
+    def forward(self, fs, ti):
+        # fs: C^1 -> C^1
+        t = real_vector_to_complex(ti)
+        s = torch.matmul((1 / t).view(-1, 1), self.beta.view(1, -1))
+        return (torch.matmul(fs(s), self.eta.view(-1, 1)).view(-1) / t).real
+
+class Euler(InverseLaplaceTransformAlgorithmBase):
+    r"""Inherits from :meth:`torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase`.
+
+    Reconstruct trajectories :math:`\mathbf{x}(t)` for a system of Laplace representations.
+    Given a parameterized Laplace representation function :math:`\mathbf{F}(\mathbf{s})`.
+
+    Euler method, uses a similar form to that of the Fourier Series Inverse, approximating ILT Equation with the trapezoidal rule. This uses the form of,
+
+    .. math::
+        \begin{aligned}
+            \mathbf{x}(t) \approx \frac{1}{T}\sum_{k=1}^{2N} \eta_k F \left(\frac{\beta_k}{T}\right)
+        \end{aligned}
+
+    The coefficients :math:`\eta_k, \beta_k` are determined by the Euler procedure, in the Abate-Whitt framework.
+    
+    .. note::
+        Reference: Horváth, G., Horváth, I., Almousa, S. A.-D., and Telek, M. Numerical inverse laplace transformation using concentrated matrix exponential distributions. Performance Evaluation, 137:102067, 2020.
+
+    Args:
+        ilt_reconstruction_terms (int): number of ILT reconstruction terms, i.e. the number of complex :math:`s` points in `fs` to reconstruct a single time point.
+        torch_float_datatype (Torch.dtype): Torch float datatype to use internally in the ILT algorithm, and also output data type of :math:`\mathbf{x}(t)`. Default `torch.float32`.
+        torch_complex_datatype (Torch.dtype): Torch complex datatype to use internally in the ILT algorithm. Default `torch.cfloat`.
+    """
+
+    def __init__(
+        self,
+        ilt_reconstruction_terms=33,
+        torch_float_datatype=TORCH_FLOAT_DATATYPE,
+        torch_complex_datatype=TORCH_COMPLEX_DATATYPE,
+    ):
+        super().__init__(
+            ilt_reconstruction_terms, torch_float_datatype, torch_complex_datatype
+        )
+        M = int((ilt_reconstruction_terms - 1) / 2)
+        self.M = M
+        max_fn_evals = ilt_reconstruction_terms
+        n_euler = np.floor((max_fn_evals-1)/2).astype(np.int32)
+        end_element = torch.tensor([2.0], dtype=self.torch_float_datatype, device=torch.device(device))
+        end_element = end_element.pow(-n_euler)
+        eta = torch.concat((torch.tensor([0.5], dtype=self.torch_float_datatype, device=torch.device(device)),
+                    torch.ones(n_euler, dtype=self.torch_complex_datatype, device=torch.device(device)),
+                    torch.zeros(n_euler-1, dtype=self.torch_complex_datatype, device=torch.device(device)),
+                    end_element
+                    ))
+        logsum = torch.cumsum(
+            torch.log(
+                torch.arange(1,n_euler+1, dtype=torch_float_datatype, device=torch.device(device))
+                ),
+                dim=0
+            )
+        for k in torch.arange(1,n_euler, device=torch.device(device)):
+            eta[2*n_euler-k] = eta[2*n_euler-k + 1] + torch.exp(logsum[n_euler-1] - n_euler*torch.log(torch.tensor(2.0, dtype=self.torch_float_datatype, device=torch.device(device))) - logsum[k-1] - logsum[n_euler-k-1])
+        k = torch.arange(2*n_euler+1, device=torch.device(device))
+        beta = n_euler*torch.log(torch.tensor(10.0, dtype=self.torch_float_datatype, device=torch.device(device)))/3.0 + 1j*torch.pi*k
+        final_element = torch.tensor(10.0, dtype=self.torch_float_datatype, device=torch.device(device))
+        final_element = final_element.pow((n_euler)/3.0)
+        eta  = final_element*(1-(k%2)*2) * eta
+        self.eta = eta.detach().to(torch_complex_datatype)
+        self.beta = beta.detach().to(torch_complex_datatype)
+        # eta = np.concatenate(([0.5], np.ones(n_euler), np.zeros(n_euler-1), [2.0**-n_euler]))
+        # logsum = np.cumsum(np.log(np.arange(1,n_euler+1)))
+        # for k in range(1,n_euler):
+        #     eta[2*n_euler-k] = eta[2*n_euler-k + 1] + np.exp(logsum[n_euler-1] - n_euler*np.log(2.0) - logsum[k-1] - logsum[n_euler-k-1])
+        # k = np.arange(2*n_euler+1)
+        # beta = n_euler*np.log(10.0)/3.0 + 1j*np.pi*k
+        # eta  = (10**((n_euler)/3.0))*(1-(k%2)*2) * eta
+        # self.eta = (
+        #     complex_numpy_to_complex_torch(eta).to(torch_complex_datatype).to(device)
+        # )
+        # self.beta = (
+        #     complex_numpy_to_complex_torch(beta).to(torch_complex_datatype).to(device)
+        # )
+
+    def compute_s(self, ti):
+        t = real_vector_to_complex(ti)
+        s = torch.matmul((1 / t).view(-1, 1), self.beta.view(1, -1))
+        return s, t
+
+    def line_integrate(self, fp, ti):
+        # t = real_vector_to_complex(ti)
+        return (torch.matmul(fp, self.eta.view(-1, 1)).view(-1) / ti).real
+
+    def line_integrate_all_multi(self, fp, ti, T):
+        # Input shapes
+        # fp [batch, times, data_dims, approximation_terms * 2 + 1]
+        # ti [times]
+        # T [times]
+        # Returns
+        # [batch, times, data_dims]
+        # t = real_vector_to_complex(ti)
+        return (
+            (1 / T).view(1, -1, 1) * torch.matmul(fp, self.eta.view(-1, 1)).squeeze(-1)
+        ).real
+
+    def line_integrate_all_multi_batch_time(self, fp, ti, T):
+        r"""Reconstruct trajectories :math:`\mathbf{x}(t)` for `fp`, Laplace representations evaluated at `s` points from the input `ti` points, :math:`t`, using the selected ILT algorithm (takes batch input of `fp`).
+
+        Args:
+            fp (Tensor): Laplace representation evaluated at `s` points derived from the input time points `ti`. `fp` has shape :math:`(\text{BatchSize}, \text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})`
+            ti (Tensor): time points to reconstruct trajectory for of shape :math:`(\text{BatchSize}, \text{SeqLen})`.
+            T (Tensor): time points to reconstruct trajectory for used as the reconstruction of times up to `T` time point of shape :math:`(\text{SeqLen})`. Best practice for most ILT algorithms is
+            to set `T = ti`, for the ILT algorithms that rely on `T`.
+
+        Returns:
+            Tensor of reconstructions :math:`\mathbf{x}(t)` of shape :math:`(\text{BatchSize}, \text{SeqLen}, d_{\text{obs}})`. :math:`\text{SeqLen}` dimension corresponds to the different time
+            points :math:`t`. This tensor of reconstructions contains the solved value of :math:`\mathbf{x}` for each desired time point in `t`.
+
+        """
+        # Input shapes
+        # fp [batch, times, data_dims, approximation_terms * 2 + 1]
+        # ti [times]
+        # T [times]
+        # Returns
+        # [batch, times, data_dims]
+        return (
+            (1 / T).view(T.shape[0], T.shape[1], 1) * torch.matmul(fp, self.eta.view(-1, 1)).view(fp.shape[0], fp.shape[1], fp.shape[2])
+        ).real
+
+    def forward(self, fs, ti):
+        # fs: C^1 -> C^1
+        t = real_vector_to_complex(ti)
+        s = torch.matmul((1 / t).view(-1, 1), self.beta.view(1, -1))
+        return (torch.matmul(fs(s), self.eta.view(-1, 1)).view(-1) / t).real
 
 class CME(InverseLaplaceTransformAlgorithmBase):
     r"""Inherits from :meth:`torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase`.
@@ -1610,6 +1839,48 @@ if __name__ == "__main__":
     f_hat_t = decoder.line_integrate(fh, t)
     print(
         "CME Loss (Split apart):\t{}\t| time: {}".format(
+            np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
+        )
+    )
+
+    # Euler
+    decoder = Euler(ilt_reconstruction_terms=ILT_RECONSTRUCTION_TERMS).to(device)
+    t0 = time()
+    f_hat_t = decoder(fs, t)
+    print(
+        "Euler Loss:\t{}\t| time: {}".format(
+            np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
+        )
+    )
+
+    decoder = Euler(ilt_reconstruction_terms=ILT_RECONSTRUCTION_TERMS).to(device)
+    t0 = time()
+    s, T = decoder.compute_s(t)
+    fh = fs(s)
+    f_hat_t = decoder.line_integrate(fh, t)
+    print(
+        "Euler Loss (Split apart):\t{}\t| time: {}".format(
+            np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
+        )
+    )
+
+    # Gaver
+    decoder = Gaver(ilt_reconstruction_terms=ILT_RECONSTRUCTION_TERMS).to(device)
+    t0 = time()
+    f_hat_t = decoder(fs, t)
+    print(
+        "Gaver Loss:\t{}\t| time: {}".format(
+            np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
+        )
+    )
+
+    decoder = Gaver(ilt_reconstruction_terms=ILT_RECONSTRUCTION_TERMS).to(device)
+    t0 = time()
+    s, T = decoder.compute_s(t)
+    fh = fs(s)
+    f_hat_t = decoder.line_integrate(fh, t)
+    print(
+        "Gaver Loss (Split apart):\t{}\t| time: {}".format(
             np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy()), time() - t0
         )
     )
