@@ -108,7 +108,7 @@ def laplace_reconstruct(
         phim = torch.reshape(phim, s.imag.shape)
         sph_coords = torch.cat((thetam, phim), 1)
         s_terms_dim = thetam.shape[1]
-        if len(t.shape) == 2:
+        if len(torch.squeeze(t).shape) == 2:
             inputs = torch.cat(
                 (
                     sph_coords.view(batch_dim, time_dim, -1),
@@ -143,7 +143,7 @@ def laplace_reconstruct(
         )
         sr = torch.reshape(so, s_real.shape)
         ss = sr.view(-1, time_dim, recon_dim, s_terms_dim)
-    if len(t.shape) == 2:
+    if len(torch.squeeze(t).shape) == 2:
         return ilt.line_integrate_all_multi_batch_time(
             ss, t.view(-1, time_dim), T.view(-1, time_dim)
         )
