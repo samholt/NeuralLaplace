@@ -162,17 +162,17 @@ This <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> is used in
 <li><p><strong>laplace_rep_func</strong> (<em>nn.Module</em>) – Function that maps an input of two tensors, first a scalar Tensor <cite>p</cite> encoding the initial system state and secondly a complex Tensor <cite>s</cite> used to evaluate the Laplace representation.</p></li>
 <li><p><strong>p</strong> (<em>Tensor</em>) – latent variable Tensor of shape <span class="math notranslate nohighlight">\((\text{MiniBatchSize}, \text{K})\)</span>. Where <span class="math notranslate nohighlight">\(\text{K}\)</span> is a hyperparameter, and can be set by the user to their desired value.</p></li>
 <li><p><strong>t</strong> (<em>Tensor</em>) – time points to reconstruct trajectories for of shape <span class="math notranslate nohighlight">\((\text{MiniBatchSize}, \text{SeqLen})\)</span> or <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span> if all trajectories use the same time points.</p></li>
-<li><p><strong>recon_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – trajectory dimension for a given time point. Corresponds to dim <span class="math notranslate nohighlight">\(d_{\text{obs}}\)</span>. If not explicitly specified, will use the same last dimension of <cite>p</cite>, i.e. <span class="math notranslate nohighlight">\(\text{K}\)</span>.</p></li>
-<li><p><strong>ilt_algorithm</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – inverse Laplace transform algorithm to use. Default: <code class="docutils literal notranslate"><span class="pre">fourier</span></code>. Available are {<code class="docutils literal notranslate"><span class="pre">fourier</span></code>, <code class="docutils literal notranslate"><span class="pre">dehoog</span></code>, <code class="docutils literal notranslate"><span class="pre">cme</span></code>, <code class="docutils literal notranslate"><span class="pre">fixed_tablot</span></code>, <code class="docutils literal notranslate"><span class="pre">stehfest</span></code>}. See inverse_laplace.py for further details.</p></li>
-<li><p><strong>use_sphere_projection</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – this uses the <cite>laplace_rep_func</cite> in the stereographic projection of the Riemann sphere. Default <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>laplace_rep_func</cite> to reconstruct a single time point.</p></li>
+<li><p><strong>recon_dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – trajectory dimension for a given time point. Corresponds to dim <span class="math notranslate nohighlight">\(d_{\text{obs}}\)</span>. If not explicitly specified, will use the same last dimension of <cite>p</cite>, i.e. <span class="math notranslate nohighlight">\(\text{K}\)</span>.</p></li>
+<li><p><strong>ilt_algorithm</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – inverse Laplace transform algorithm to use. Default: <code class="docutils literal notranslate"><span class="pre">fourier</span></code>. Available are {<code class="docutils literal notranslate"><span class="pre">fourier</span></code>, <code class="docutils literal notranslate"><span class="pre">dehoog</span></code>, <code class="docutils literal notranslate"><span class="pre">cme</span></code>, <code class="docutils literal notranslate"><span class="pre">fixed_tablot</span></code>, <code class="docutils literal notranslate"><span class="pre">stehfest</span></code>}. See inverse_laplace.py for further details.</p></li>
+<li><p><strong>use_sphere_projection</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – this uses the <cite>laplace_rep_func</cite> in the stereographic projection of the Riemann sphere. Default <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>laplace_rep_func</cite> to reconstruct a single time point.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{MiniBatchSize}, \text{SeqLen}, d_{\text{obs}})\)</span> or if no mini batch of shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – if an invalid <cite>ilt_algorithm</cite> is provided.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – if an invalid <cite>ilt_algorithm</cite> is provided.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -247,7 +247,7 @@ The vast majority of ILT algorithms are differentiable with respect to <span cla
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
 <li><p><strong>torch_float_datatype</strong> (<em>Torch.dtype</em>) – Torch float datatype to use internally in the ILT algorithm, and also output data type of <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>. Default <cite>torch.float32</cite>.</p></li>
 <li><p><strong>torch_complex_datatype</strong> (<em>Torch.dtype</em>) – Torch complex datatype to use internally in the ILT algorithm. Default <cite>torch.cfloat</cite>.</p></li>
 </ul>
@@ -360,13 +360,13 @@ trajectories, and their associated system poles that we can model <span class="m
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
 <li><p><strong>torch_float_datatype</strong> (<em>Torch.dtype</em>) – Torch float datatype to use internally in the ILT algorithm, and also output data type of <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>. Default <cite>torch.float32</cite>.</p></li>
 <li><p><strong>torch_complex_datatype</strong> (<em>Torch.dtype</em>) – Torch complex datatype to use internally in the ILT algorithm. Default <cite>torch.cfloat</cite>.</p></li>
-<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – <span class="math notranslate nohighlight">\(\alpha\)</span>, default <span class="math notranslate nohighlight">\(\alpha=1e-3\)</span>.</p></li>
-<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – desired tolerance, if not specified simply related to alpha as <span class="math notranslate nohighlight">\(\text{tol}=10\alpha\)</span>.</p></li>
-<li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – scaling factor (tuneable), default 2.0.</p></li>
-<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Small machine floating point precision, default <span class="math notranslate nohighlight">\(\text{eps}=1e-6\)</span>.</p></li>
+<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – <span class="math notranslate nohighlight">\(\alpha\)</span>, default <span class="math notranslate nohighlight">\(\alpha=1e-3\)</span>.</p></li>
+<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – desired tolerance, if not specified simply related to alpha as <span class="math notranslate nohighlight">\(\text{tol}=10\alpha\)</span>.</p></li>
+<li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – scaling factor (tuneable), default 2.0.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Small machine floating point precision, default <span class="math notranslate nohighlight">\(\text{eps}=1e-6\)</span>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -378,8 +378,8 @@ trajectories, and their associated system poles that we can model <span class="m
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
-<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
-<li><p><strong>Ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Scaled maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>T=time_max * self.scale</cite>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+<li><p><strong>Ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Scaled maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>T=time_max * self.scale</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -397,8 +397,8 @@ trajectories, and their associated system poles that we can model <span class="m
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fs</strong> (<em>Torch.nn.Module</em><em> or </em><em>Callable</em>) – The first parameter.</p></li>
 <li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
-<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
-<li><p><strong>Ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Scaled maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>T=time_max * self.scale</cite>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+<li><p><strong>Ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Scaled maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>T=time_max * self.scale</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -494,12 +494,12 @@ SIAM Journal on Scientific and Statistical Computing, 3(3):357–366, 1982</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
 <li><p><strong>torch_float_datatype</strong> (<em>Torch.dtype</em>) – Torch float datatype to use internally in the ILT algorithm, and also output data type of <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>. Default <cite>torch.float32</cite>.</p></li>
 <li><p><strong>torch_complex_datatype</strong> (<em>Torch.dtype</em>) – Torch complex datatype to use internally in the ILT algorithm. Default <cite>torch.cfloat</cite>.</p></li>
-<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – <span class="math notranslate nohighlight">\(\alpha\)</span>, default <span class="math notranslate nohighlight">\(\alpha=10e-10\)</span>.</p></li>
-<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – desired tolerance, if not specified simply related to alpha as <span class="math notranslate nohighlight">\(\text{tol}=10\alpha\)</span>.</p></li>
-<li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – scaling factor (tuneable), default 2.0.</p></li>
+<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – <span class="math notranslate nohighlight">\(\alpha\)</span>, default <span class="math notranslate nohighlight">\(\alpha=10e-10\)</span>.</p></li>
+<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – desired tolerance, if not specified simply related to alpha as <span class="math notranslate nohighlight">\(\text{tol}=10\alpha\)</span>.</p></li>
+<li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – scaling factor (tuneable), default 2.0.</p></li>
 </ul>
 </dd>
 </dl>
@@ -509,7 +509,7 @@ SIAM Journal on Scientific and Statistical Computing, 3(3):357–366, 1982</p>
 <dd><p>Computes <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> to evaluate the Laplace representation <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{s})\)</span> at for a single input time point <cite>time_max</cite>, using the selected ILT algorithm.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to, a single time point to generate <cite>s</cite> for.</p>
+<dd class="field-odd"><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Maximum time to compute reconstruction up to, a single time point to generate <cite>s</cite> for.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Tensor of complex s points <span class="math notranslate nohighlight">\(\mathbf{s}\)</span> of shape <span class="math notranslate nohighlight">\((\text{ReconTerms})\)</span>.</p>
@@ -525,8 +525,8 @@ SIAM Journal on Scientific and Statistical Computing, 3(3):357–366, 1982</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
-<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
-<li><p><strong>Ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Scaled maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>T=time_max * self.scale</cite>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+<li><p><strong>Ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Scaled maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>T=time_max * self.scale</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -547,7 +547,7 @@ SIAM Journal on Scientific and Statistical Computing, 3(3):357–366, 1982</p>
 <li><p><strong>T</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for used as the reconstruction of times up to <cite>T</cite> time point of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>. Best practice for most ILT</p></li>
 <li><p><strong>ti</strong> – </p></li>
 <li><p><strong>T.</strong> (<em>for the ILT algorithms that rely on</em>) – </p></li>
-<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to, a single time point to generate <cite>s</cite> for.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Maximum time to compute reconstruction up to, a single time point to generate <cite>s</cite> for.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -566,8 +566,8 @@ SIAM Journal on Scientific and Statistical Computing, 3(3):357–366, 1982</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fs</strong> (<em>Torch.nn.Module</em><em> or </em><em>Callable</em>) – The first parameter.</p></li>
 <li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
-<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
-<li><p><strong>Ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Scaled maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>T=time_max * self.scale</cite>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+<li><p><strong>Ti</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Scaled maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>T=time_max * self.scale</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -646,7 +646,7 @@ We note that whilst it can approximate some small sinusoidal components, for an 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
 <li><p><strong>torch_float_datatype</strong> (<em>Torch.dtype</em>) – Torch float datatype to use internally in the ILT algorithm, and also output data type of <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>. Default <cite>torch.float32</cite>.</p></li>
 <li><p><strong>torch_complex_datatype</strong> (<em>Torch.dtype</em>) – Torch complex datatype to use internally in the ILT algorithm. Default <cite>torch.cfloat</cite>.</p></li>
 </ul>
@@ -660,7 +660,7 @@ We note that whilst it can approximate some small sinusoidal components, for an 
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
-<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -678,7 +678,7 @@ We note that whilst it can approximate some small sinusoidal components, for an 
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fs</strong> (<em>Torch.nn.Module</em><em> or </em><em>Callable</em>) – The first parameter.</p></li>
 <li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
-<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -697,7 +697,7 @@ points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of r
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
 <li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
-<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -716,7 +716,7 @@ points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of r
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
 <li><p><strong>ti</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>.</p></li>
-<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
+<li><p><strong>time_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Maximum time to compute reconstruction up to. Best results use default of None, as this uses <cite>time_max=ti</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -747,7 +747,7 @@ It is fairly easy to implement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
 <li><p><strong>torch_float_datatype</strong> (<em>Torch.dtype</em>) – Torch float datatype to use internally in the ILT algorithm, and also output data type of <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>. Default <cite>torch.float32</cite>.</p></li>
 <li><p><strong>torch_complex_datatype</strong> (<em>Torch.dtype</em>) – Torch complex datatype to use internally in the ILT algorithm. Default <cite>torch.cfloat</cite>.</p></li>
 </ul>
@@ -831,7 +831,7 @@ It is moderately easy to implement when using pre-computed coefficients and scal
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
+<li><p><strong>ilt_reconstruction_terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – number of ILT reconstruction terms, i.e. the number of complex <span class="math notranslate nohighlight">\(s\)</span> points in <cite>fs</cite> to reconstruct a single time point.</p></li>
 <li><p><strong>torch_float_datatype</strong> (<em>Torch.dtype</em>) – Torch float datatype to use internally in the ILT algorithm, and also output data type of <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span>. Default <cite>torch.float32</cite>.</p></li>
 <li><p><strong>torch_complex_datatype</strong> (<em>Torch.dtype</em>) – Torch complex datatype to use internally in the ILT algorithm. Default <cite>torch.cfloat</cite>.</p></li>
 </ul>
