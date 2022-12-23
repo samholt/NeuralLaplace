@@ -1242,7 +1242,19 @@ class Fourier(InverseLaplaceTransformAlgorithmBase):
         t = real_vector_to_complex(ti)  # Could be slowing down ?
         gamma = self.alpha - torch.log(self.tol) / (self.scale * T)
         return (
-            ((1 / T) * torch.exp(gamma * t)).view(fp.shape[0], fp.shape[1], 1)* (fp[:, :, :, 0] / 2.0+ torch.sum(fp[:, :, :, 1:] * torch.exp(torch.matmul((t / T).view(-1, 1), 1j * self.k[1:].view(1, -1) * torch.pi)).view(fp.shape[0], fp.shape[1], 1, fp.shape[3]-1),3,))
+            ((1 / T) * torch.exp(gamma * t)).view(fp.shape[0], fp.shape[1], 1)
+            * (
+                fp[:, :, :, 0] / 2.0
+                + torch.sum(
+                    fp[:, :, :, 1:]
+                    * torch.exp(
+                        torch.matmul(
+                            (t / T).view(-1, 1), 1j * self.k[1:].view(1, -1) * torch.pi
+                        )
+                    ).view(fp.shape[0], fp.shape[1], 1, fp.shape[3] - 1),
+                    3,
+                )
+            )
         ).real
 
     def line_integrate_multi(self, fp, ti, T):
@@ -1324,6 +1336,7 @@ class Fourier(InverseLaplaceTransformAlgorithmBase):
             )
         ).real
 
+
 class Gaver(InverseLaplaceTransformAlgorithmBase):
     r"""Inherits from :meth:`torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase`.
 
@@ -1338,7 +1351,7 @@ class Gaver(InverseLaplaceTransformAlgorithmBase):
         \end{aligned}
 
     The coefficients :math:`\eta_k, \beta_k` are determined by the Gaver procedure, in the Abate-Whitt framework.
-    
+
     .. note::
         Reference: Horváth, G., Horváth, I., Almousa, S. A.-D., and Telek, M. Numerical inverse laplace transformation using concentrated matrix exponential distributions. Performance Evaluation, 137:102067, 2020.
 
@@ -1360,18 +1373,27 @@ class Gaver(InverseLaplaceTransformAlgorithmBase):
         M = int((ilt_reconstruction_terms - 1) / 2)
         self.M = M
         max_fn_evals = ilt_reconstruction_terms
-        if max_fn_evals%2==1:
+        if max_fn_evals % 2 == 1:
             max_fn_evals -= 1
-        ndiv2 = int(max_fn_evals/2)
-        eta = np.zeros(max_fn_evals);
-        beta = np.zeros(max_fn_evals);
-        logsum = np.concatenate(([0], np.cumsum(np.log(np.arange(1,max_fn_evals+1)))))
-        for k in range(1,max_fn_evals+1):
-            inside_sum = 0.0;
-            for j in range(np.floor((k+1)/2).astype(np.int32), min(k,ndiv2)+1):
-                inside_sum += np.exp((ndiv2+1)*np.log(j) - logsum[ndiv2-j] + logsum[2*j] - 2*logsum[j] - logsum[k-j] - logsum[2*j-k])
-            eta[k-1] = np.log(2.0)*(-1)**(k+ndiv2)*inside_sum
-            beta[k-1] = k * np.log(2.0)
+        ndiv2 = int(max_fn_evals / 2)
+        eta = np.zeros(max_fn_evals)
+        beta = np.zeros(max_fn_evals)
+        logsum = np.concatenate(
+            ([0], np.cumsum(np.log(np.arange(1, max_fn_evals + 1))))
+        )
+        for k in range(1, max_fn_evals + 1):
+            inside_sum = 0.0
+            for j in range(np.floor((k + 1) / 2).astype(np.int32), min(k, ndiv2) + 1):
+                inside_sum += np.exp(
+                    (ndiv2 + 1) * np.log(j)
+                    - logsum[ndiv2 - j]
+                    + logsum[2 * j]
+                    - 2 * logsum[j]
+                    - logsum[k - j]
+                    - logsum[2 * j - k]
+                )
+            eta[k - 1] = np.log(2.0) * (-1) ** (k + ndiv2) * inside_sum
+            beta[k - 1] = k * np.log(2.0)
         self.eta = (
             complex_numpy_to_complex_torch(eta).to(torch_complex_datatype).to(device)
         )
@@ -1421,7 +1443,10 @@ class Gaver(InverseLaplaceTransformAlgorithmBase):
         # Returns
         # [batch, times, data_dims]
         return (
-            (1 / T).view(T.shape[0], T.shape[1], 1) * torch.matmul(fp, self.eta.view(-1, 1)).view(fp.shape[0], fp.shape[1], fp.shape[2])
+            (1 / T).view(T.shape[0], T.shape[1], 1)
+            * torch.matmul(fp, self.eta.view(-1, 1)).view(
+                fp.shape[0], fp.shape[1], fp.shape[2]
+            )
         ).real
 
     def forward(self, fs, ti):
@@ -1429,6 +1454,7 @@ class Gaver(InverseLaplaceTransformAlgorithmBase):
         t = real_vector_to_complex(ti)
         s = torch.matmul((1 / t).view(-1, 1), self.beta.view(1, -1))
         return (torch.matmul(fs(s), self.eta.view(-1, 1)).view(-1) / t).real
+
 
 class Euler(InverseLaplaceTransformAlgorithmBase):
     r"""Inherits from :meth:`torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase`.
@@ -1444,7 +1470,7 @@ class Euler(InverseLaplaceTransformAlgorithmBase):
         \end{aligned}
 
     The coefficients :math:`\eta_k, \beta_k` are determined by the Euler procedure, in the Abate-Whitt framework.
-    
+
     .. note::
         Reference: Horváth, G., Horváth, I., Almousa, S. A.-D., and Telek, M. Numerical inverse laplace transformation using concentrated matrix exponential distributions. Performance Evaluation, 137:102067, 2020.
 
@@ -1466,27 +1492,70 @@ class Euler(InverseLaplaceTransformAlgorithmBase):
         M = int((ilt_reconstruction_terms - 1) / 2)
         self.M = M
         max_fn_evals = ilt_reconstruction_terms
-        n_euler = np.floor((max_fn_evals-1)/2).astype(np.int32)
-        end_element = torch.tensor([2.0], dtype=self.torch_float_datatype, device=torch.device(device))
+        n_euler = np.floor((max_fn_evals - 1) / 2).astype(np.int32)
+        end_element = torch.tensor(
+            [2.0], dtype=self.torch_float_datatype, device=torch.device(device)
+        )
         end_element = end_element.pow(-n_euler)
-        eta = torch.concat((torch.tensor([0.5], dtype=self.torch_float_datatype, device=torch.device(device)),
-                    torch.ones(n_euler, dtype=self.torch_complex_datatype, device=torch.device(device)),
-                    torch.zeros(n_euler-1, dtype=self.torch_complex_datatype, device=torch.device(device)),
-                    end_element
-                    ))
+        eta = torch.concat(
+            (
+                torch.tensor(
+                    [0.5], dtype=self.torch_float_datatype, device=torch.device(device)
+                ),
+                torch.ones(
+                    n_euler,
+                    dtype=self.torch_complex_datatype,
+                    device=torch.device(device),
+                ),
+                torch.zeros(
+                    n_euler - 1,
+                    dtype=self.torch_complex_datatype,
+                    device=torch.device(device),
+                ),
+                end_element,
+            )
+        )
         logsum = torch.cumsum(
             torch.log(
-                torch.arange(1,n_euler+1, dtype=torch_float_datatype, device=torch.device(device))
-                ),
-                dim=0
+                torch.arange(
+                    1,
+                    n_euler + 1,
+                    dtype=torch_float_datatype,
+                    device=torch.device(device),
+                )
+            ),
+            dim=0,
+        )
+        for k in torch.arange(1, n_euler, device=torch.device(device)):
+            eta[2 * n_euler - k] = eta[2 * n_euler - k + 1] + torch.exp(
+                logsum[n_euler - 1]
+                - n_euler
+                * torch.log(
+                    torch.tensor(
+                        2.0,
+                        dtype=self.torch_float_datatype,
+                        device=torch.device(device),
+                    )
+                )
+                - logsum[k - 1]
+                - logsum[n_euler - k - 1]
             )
-        for k in torch.arange(1,n_euler, device=torch.device(device)):
-            eta[2*n_euler-k] = eta[2*n_euler-k + 1] + torch.exp(logsum[n_euler-1] - n_euler*torch.log(torch.tensor(2.0, dtype=self.torch_float_datatype, device=torch.device(device))) - logsum[k-1] - logsum[n_euler-k-1])
-        k = torch.arange(2*n_euler+1, device=torch.device(device))
-        beta = n_euler*torch.log(torch.tensor(10.0, dtype=self.torch_float_datatype, device=torch.device(device)))/3.0 + 1j*torch.pi*k
-        final_element = torch.tensor(10.0, dtype=self.torch_float_datatype, device=torch.device(device))
-        final_element = final_element.pow((n_euler)/3.0)
-        eta  = final_element*(1-(k%2)*2) * eta
+        k = torch.arange(2 * n_euler + 1, device=torch.device(device))
+        beta = (
+            n_euler
+            * torch.log(
+                torch.tensor(
+                    10.0, dtype=self.torch_float_datatype, device=torch.device(device)
+                )
+            )
+            / 3.0
+            + 1j * torch.pi * k
+        )
+        final_element = torch.tensor(
+            10.0, dtype=self.torch_float_datatype, device=torch.device(device)
+        )
+        final_element = final_element.pow((n_euler) / 3.0)
+        eta = final_element * (1 - (k % 2) * 2) * eta
         self.eta = eta.detach().to(torch_complex_datatype)
         self.beta = beta.detach().to(torch_complex_datatype)
         # eta = np.concatenate(([0.5], np.ones(n_euler), np.zeros(n_euler-1), [2.0**-n_euler]))
@@ -1545,7 +1614,10 @@ class Euler(InverseLaplaceTransformAlgorithmBase):
         # Returns
         # [batch, times, data_dims]
         return (
-            (1 / T).view(T.shape[0], T.shape[1], 1) * torch.matmul(fp, self.eta.view(-1, 1)).view(fp.shape[0], fp.shape[1], fp.shape[2])
+            (1 / T).view(T.shape[0], T.shape[1], 1)
+            * torch.matmul(fp, self.eta.view(-1, 1)).view(
+                fp.shape[0], fp.shape[1], fp.shape[2]
+            )
         ).real
 
     def forward(self, fs, ti):
@@ -1553,6 +1625,7 @@ class Euler(InverseLaplaceTransformAlgorithmBase):
         t = real_vector_to_complex(ti)
         s = torch.matmul((1 / t).view(-1, 1), self.beta.view(1, -1))
         return (torch.matmul(fs(s), self.eta.view(-1, 1)).view(-1) / t).real
+
 
 class CME(InverseLaplaceTransformAlgorithmBase):
     r"""Inherits from :meth:`torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase`.
@@ -1659,7 +1732,10 @@ class CME(InverseLaplaceTransformAlgorithmBase):
         # Returns
         # [batch, times, data_dims]
         return (
-            (1 / T).view(T.shape[0], T.shape[1], 1) * torch.matmul(fp, self.eta.view(-1, 1)).view(fp.shape[0], fp.shape[1], fp.shape[2])
+            (1 / T).view(T.shape[0], T.shape[1], 1)
+            * torch.matmul(fp, self.eta.view(-1, 1)).view(
+                fp.shape[0], fp.shape[1], fp.shape[2]
+            )
         ).real
 
     def forward(self, fs, ti):

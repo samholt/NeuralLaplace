@@ -8,7 +8,7 @@ Laplace Reconstructions
 import torch
 from torch import Tensor, nn
 
-from .inverse_laplace import CME, DeHoog, FixedTablot, Fourier, Stehfest, Euler
+from .inverse_laplace import CME, DeHoog, Euler, FixedTablot, Fourier, Stehfest
 from .transformations import complex_to_spherical_riemann, spherical_to_complex
 
 ILT_ALGORITHMS = {
@@ -83,7 +83,7 @@ def laplace_reconstruct(
             ilt_reconstruction_terms=ilt_reconstruction_terms,
             torch_float_datatype=torch.double,
             torch_complex_datatype=torch.cdouble,
-            **options
+            **options,
         )
     else:
         ilt = ILT_ALGORITHMS[ilt_algorithm](
@@ -96,7 +96,7 @@ def laplace_reconstruct(
     elif len(t.shape) == 2:
         time_dim = t.shape[1]
     else:
-        raise ValueError(f'Unsupported time tensor shape, please use (batch, time_dim)')
+        raise ValueError("Unsupported time tensor shape, please use (batch, time_dim)")
     batch_dim = p.shape[0]
     s, T = ilt.compute_s(torch.squeeze(t))
     T = T
@@ -144,7 +144,9 @@ def laplace_reconstruct(
         sr = torch.reshape(so, s_real.shape)
         ss = sr.view(-1, time_dim, recon_dim, s_terms_dim)
     if len(t.shape) == 2:
-        return ilt.line_integrate_all_multi_batch_time(ss, t.view(-1,time_dim), T.view(-1,time_dim))
+        return ilt.line_integrate_all_multi_batch_time(
+            ss, t.view(-1, time_dim), T.view(-1, time_dim)
+        )
     else:
         return ilt.line_integrate_all_multi(ss, torch.squeeze(t), T)
 
@@ -173,7 +175,7 @@ def _check_inputs(
                 ilt_algorithm, '{"' + '", "'.join(ILT_ALGORITHMS.keys()) + '"}.'
             )
         )
-    if (ilt_reconstruction_terms % 2 == 0) and (ilt_algorithm != 'cme'):
+    if (ilt_reconstruction_terms % 2 == 0) and (ilt_algorithm != "cme"):
         raise ValueError(
             'Invalid "ilt_reconstruction_terms", must be an odd input number. Was given an even number of {}'.format(
                 ilt_reconstruction_terms
@@ -189,7 +191,7 @@ def _check_inputs(
     #         "Handling (MiniBatchSize, SeqLen) is not implemented yet. Coming soon. If urgent post an issue on GitHub"
     #     )
     # if len(p.shape) >= 3:
-        # p = torch.squeeze(p)
+    # p = torch.squeeze(p)
     if recon_dim is None:
         recon_dim = p.shape[1]
     return options, recon_dim, p
