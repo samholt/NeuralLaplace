@@ -19,7 +19,7 @@ pip install torchlaplace
 To install the latest on GitHub:
 
 ```
-pip install git+https://github.com/samholt/torchlaplace
+pip install git+https://github.com/samholt/NeuralLaplace.git
 ```
 
 ## Tutorials
