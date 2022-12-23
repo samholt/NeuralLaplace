@@ -185,11 +185,6 @@ def _check_inputs(
         options = {}
     else:
         options = options.copy()
-    # to = torch.squeeze(t)
-    # if len(to.shape) >= 2:
-    #     raise NotImplementedError(
-    #         "Handling (MiniBatchSize, SeqLen) is not implemented yet. Coming soon. If urgent post an issue on GitHub"
-    #     )
     # if len(p.shape) >= 3:
     # p = torch.squeeze(p)
     if recon_dim is None:

@@ -60,6 +60,20 @@ def test_laplace_reconstruct_time_shared_for_across_all_samples_within_batch():
     assert predictions.shape[0] == 128
     assert predictions.shape[1] == 100
 
+def test_laplace_reconstruct_time_shared_for_across_all_samples_within_batch_with_time_as_vector():
+    s_recon_terms = 33
+    output_dim = 1
+    latent_dim = 2
+    device = torch.device("cuda:" + str(0) if torch.cuda.is_available() else "cpu")
+    laplace_rep_func = LaplaceRepresentationFunc(
+        s_recon_terms, output_dim, latent_dim
+    ).to(device)
+    p = torch.rand((128,2)).to(device)
+    t = torch.rand((100)).to(device)
+    predictions = laplace_reconstruct(laplace_rep_func, p, t, recon_dim=1)
+    assert predictions.shape[0] == 128
+    assert predictions.shape[1] == 100
+
 def test_laplace_reconstruct_unique_times_for_each_sample_within_batch():
     s_recon_terms = 33
     output_dim = 1
@@ -77,4 +91,5 @@ def test_laplace_reconstruct_unique_times_for_each_sample_within_batch():
 if __name__ == "__main__":
     test_laplace_reconstruct_original()
     test_laplace_reconstruct_time_shared_for_across_all_samples_within_batch()
+    test_laplace_reconstruct_time_shared_for_across_all_samples_within_batch_with_time_as_vector()
     test_laplace_reconstruct_unique_times_for_each_sample_within_batch()
