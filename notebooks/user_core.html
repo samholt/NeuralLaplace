@@ -4,11 +4,11 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User Guide Laplace Reconstruct &mdash; TorchLaplace 0.0.2 documentation</title>
+  <title>User Guide Laplace Reconstruct &mdash; TorchLaplace 0.0.4 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css" type="text/css" />
       <link rel="stylesheet" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css" type="text/css" />
       <link rel="stylesheet" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" type="text/css" />
       <link rel="stylesheet" href="../_static/torchlaplace.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -37,7 +37,7 @@
             <a href="../index.html" class="icon icon-home"> TorchLaplace
           </a>
               <div class="version">
-                0.0.2
+                0.0.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -380,9 +380,9 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from torchlaplace import laplace_reconstruct
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torchlaplace</span> <span class="kn">import</span> <span class="n">laplace_reconstruct</span>
 
-laplace_reconstruct(laplace_rep_func, p, t)
+<span class="n">laplace_reconstruct</span><span class="p">(</span><span class="n">laplace_rep_func</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -400,69 +400,69 @@ laplace_reconstruct(laplace_rep_func, p, t)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from torch import nn
-import torch
-device = torch.device(&quot;cuda:0&quot; if torch.cuda.is_available() else &quot;cpu&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
 
-# Model (encoder and Laplace representation func)
-class ReverseGRUEncoder(nn.Module):
-    # Encodes observed trajectory into latent vector
-    def __init__(self, dimension_in, latent_dim, hidden_units, encode_obs_time=True):
-        super(ReverseGRUEncoder, self).__init__()
-        self.encode_obs_time = encode_obs_time
-        if self.encode_obs_time:
-            dimension_in += 1
-        self.gru = nn.GRU(dimension_in, hidden_units, 2, batch_first=True)
-        self.linear_out = nn.Linear(hidden_units, latent_dim)
-        nn.init.xavier_uniform_(self.linear_out.weight)
+<span class="c1"># Model (encoder and Laplace representation func)</span>
+<span class="k">class</span> <span class="nc">ReverseGRUEncoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="c1"># Encodes observed trajectory into latent vector</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dimension_in</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">,</span> <span class="n">hidden_units</span><span class="p">,</span> <span class="n">encode_obs_time</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ReverseGRUEncoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encode_obs_time</span> <span class="o">=</span> <span class="n">encode_obs_time</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_obs_time</span><span class="p">:</span>
+            <span class="n">dimension_in</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gru</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">GRU</span><span class="p">(</span><span class="n">dimension_in</span><span class="p">,</span> <span class="n">hidden_units</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear_out</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_units</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">)</span>
+        <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_uniform_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linear_out</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
 
-    def forward(self, observed_data, observed_tp):
-        trajs_to_encode = observed_data  # (batch_size, t_observed_dim, observed_dim)
-        if self.encode_obs_time:
-            trajs_to_encode = torch.cat(
-                (
-                    observed_data,
-                    observed_tp.view(1, -1, 1).repeat(observed_data.shape[0], 1, 1),
-                ),
-                dim=2,
-            )
-        reversed_trajs_to_encode = torch.flip(trajs_to_encode, (1,))
-        out, _ = self.gru(reversed_trajs_to_encode)
-        return self.linear_out(out[:, -1, :])
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observed_data</span><span class="p">,</span> <span class="n">observed_tp</span><span class="p">):</span>
+        <span class="n">trajs_to_encode</span> <span class="o">=</span> <span class="n">observed_data</span>  <span class="c1"># (batch_size, t_observed_dim, observed_dim)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_obs_time</span><span class="p">:</span>
+            <span class="n">trajs_to_encode</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="n">observed_data</span><span class="p">,</span>
+                    <span class="n">observed_tp</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">observed_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="p">),</span>
+                <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">reversed_trajs_to_encode</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">trajs_to_encode</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+        <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gru</span><span class="p">(</span><span class="n">reversed_trajs_to_encode</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear_out</span><span class="p">(</span><span class="n">out</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
 
-class LaplaceRepresentationFunc(nn.Module):
-    # SphereSurfaceModel : C^{b+k} -&gt; C^{bxd} - In Riemann Sphere Co ords : b dim s reconstruction terms, k is latent encoding dimension, d is output dimension
-    def __init__(self, s_dim, output_dim, latent_dim, hidden_units=64):
-        super(LaplaceRepresentationFunc, self).__init__()
-        self.s_dim = s_dim
-        self.output_dim = output_dim
-        self.latent_dim = latent_dim
-        self.linear_tanh_stack = nn.Sequential(
-            nn.Linear(s_dim * 2 + latent_dim, hidden_units),
-            nn.Tanh(),
-            nn.Linear(hidden_units, hidden_units),
-            nn.Tanh(),
-            nn.Linear(hidden_units, (s_dim) * 2 * output_dim),
-        )
+<span class="k">class</span> <span class="nc">LaplaceRepresentationFunc</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="c1"># SphereSurfaceModel : C^{b+k} -&gt; C^{bxd} - In Riemann Sphere Co ords : b dim s reconstruction terms, k is latent encoding dimension, d is output dimension</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">,</span> <span class="n">hidden_units</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LaplaceRepresentationFunc</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s_dim</span> <span class="o">=</span> <span class="n">s_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_dim</span> <span class="o">=</span> <span class="n">output_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latent_dim</span> <span class="o">=</span> <span class="n">latent_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear_tanh_stack</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">s_dim</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">latent_dim</span><span class="p">,</span> <span class="n">hidden_units</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_units</span><span class="p">,</span> <span class="n">hidden_units</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_units</span><span class="p">,</span> <span class="p">(</span><span class="n">s_dim</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">output_dim</span><span class="p">),</span>
+        <span class="p">)</span>
 
-        for m in self.linear_tanh_stack.modules():
-            if isinstance(m, nn.Linear):
-                nn.init.xavier_uniform_(m.weight)
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear_tanh_stack</span><span class="o">.</span><span class="n">modules</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">):</span>
+                <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">xavier_uniform_</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
 
-        phi_max = torch.pi / 2.0
-        self.phi_scale = phi_max - -torch.pi / 2.0
+        <span class="n">phi_max</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi_scale</span> <span class="o">=</span> <span class="n">phi_max</span> <span class="o">-</span> <span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span>
 
-    def forward(self, i):
-        out = self.linear_tanh_stack(i.view(-1, self.s_dim * 2 + self.latent_dim)).view(
-            -1, 2 * self.output_dim, self.s_dim
-        )
-        theta = nn.Tanh()(out[:, : self.output_dim, :]) * torch.pi  # From - pi to + pi
-        phi = (
-            nn.Tanh()(out[:, self.output_dim :, :]) * self.phi_scale / 2.0
-            - torch.pi / 2.0
-            + self.phi_scale / 2.0
-        )  # Form -pi / 2 to + pi / 2
-        return theta, phi
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear_tanh_stack</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_dim</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_dim</span><span class="p">))</span><span class="o">.</span><span class="n">view</span><span class="p">(</span>
+            <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_dim</span>
+        <span class="p">)</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">()(</span><span class="n">out</span><span class="p">[:,</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_dim</span><span class="p">,</span> <span class="p">:])</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span>  <span class="c1"># From - pi to + pi</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">()(</span><span class="n">out</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_dim</span> <span class="p">:,</span> <span class="p">:])</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi_scale</span> <span class="o">/</span> <span class="mf">2.0</span>
+            <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi_scale</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="p">)</span>  <span class="c1"># Form -pi / 2 to + pi / 2</span>
+        <span class="k">return</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span>
 <br/></pre></div>
 </div>
 </div>
@@ -473,85 +473,85 @@ class LaplaceRepresentationFunc(nn.Module):
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from torch.utils.data import DataLoader
-from torchlaplace.data_utils import basic_collate_fn
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">torchlaplace.data_utils</span> <span class="kn">import</span> <span class="n">basic_collate_fn</span>
 
-normalize_dataset = True
-batch_size = 128
-extrapolate = True
+<span class="n">normalize_dataset</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">extrapolate</span> <span class="o">=</span> <span class="kc">True</span>
 
-def sawtooth(trajectories_to_sample=100, t_nsamples=200):
-    # Toy sawtooth waveform. Simple to generate, for Differential Equation Datasets see datasets.py (Note more complex DE take time to sample from, in some cases minutes).
-    t_end = 20.0
-    t_begin = t_end / t_nsamples
-    ti = torch.linspace(t_begin, t_end, t_nsamples).to(device)
+<span class="k">def</span> <span class="nf">sawtooth</span><span class="p">(</span><span class="n">trajectories_to_sample</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">t_nsamples</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+    <span class="c1"># Toy sawtooth waveform. Simple to generate, for Differential Equation Datasets see datasets.py (Note more complex DE take time to sample from, in some cases minutes).</span>
+    <span class="n">t_end</span> <span class="o">=</span> <span class="mf">20.0</span>
+    <span class="n">t_begin</span> <span class="o">=</span> <span class="n">t_end</span> <span class="o">/</span> <span class="n">t_nsamples</span>
+    <span class="n">ti</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t_begin</span><span class="p">,</span> <span class="n">t_end</span><span class="p">,</span> <span class="n">t_nsamples</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
-    def sampler(t, x0=0):
-        return (t + x0) / (2 * torch.pi) - torch.floor((t + x0) / (2 * torch.pi))
+    <span class="k">def</span> <span class="nf">sampler</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">t</span> <span class="o">+</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
 
-    x0s = torch.linspace(0, 2 * torch.pi, trajectories_to_sample)
-    trajs = []
-    for x0 in x0s:
-        trajs.append(sampler(ti, x0))
-    y = torch.stack(trajs)
-    trajectories = y.view(trajectories_to_sample, -1, 1)
-    return trajectories, ti
+    <span class="n">x0s</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">trajectories_to_sample</span><span class="p">)</span>
+    <span class="n">trajs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x0</span> <span class="ow">in</span> <span class="n">x0s</span><span class="p">:</span>
+        <span class="n">trajs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sampler</span><span class="p">(</span><span class="n">ti</span><span class="p">,</span> <span class="n">x0</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">trajs</span><span class="p">)</span>
+    <span class="n">trajectories</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">trajectories_to_sample</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">trajectories</span><span class="p">,</span> <span class="n">ti</span>
 
 
-trajectories, t = sawtooth(
-    trajectories_to_sample=1000,
-    t_nsamples=200,
-)
-if normalize_dataset:
-    samples = trajectories.shape[0]
-    dim = trajectories.shape[2]
-    traj = (
-        torch.reshape(trajectories, (-1, dim))
-        - torch.reshape(trajectories, (-1, dim)).mean(0)
-    ) / torch.reshape(trajectories, (-1, dim)).std(0)
-    trajectories = torch.reshape(traj, (samples, -1, dim))
-train_split = int(0.8 * trajectories.shape[0])
-test_split = int(0.9 * trajectories.shape[0])
-traj_index = torch.randperm(trajectories.shape[0])
-train_trajectories = trajectories[traj_index[:train_split], :, :]
-val_trajectories = trajectories[traj_index[train_split:test_split], :, :]
-test_trajectories = trajectories[traj_index[test_split:], :, :]
+<span class="n">trajectories</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">sawtooth</span><span class="p">(</span>
+    <span class="n">trajectories_to_sample</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">t_nsamples</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">if</span> <span class="n">normalize_dataset</span><span class="p">:</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">trajectories</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="n">trajectories</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">traj</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">trajectories</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
+        <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">trajectories</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">)</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">trajectories</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">trajectories</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">traj</span><span class="p">,</span> <span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
+<span class="n">train_split</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.8</span> <span class="o">*</span> <span class="n">trajectories</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">test_split</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.9</span> <span class="o">*</span> <span class="n">trajectories</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">traj_index</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randperm</span><span class="p">(</span><span class="n">trajectories</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">train_trajectories</span> <span class="o">=</span> <span class="n">trajectories</span><span class="p">[</span><span class="n">traj_index</span><span class="p">[:</span><span class="n">train_split</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:]</span>
+<span class="n">val_trajectories</span> <span class="o">=</span> <span class="n">trajectories</span><span class="p">[</span><span class="n">traj_index</span><span class="p">[</span><span class="n">train_split</span><span class="p">:</span><span class="n">test_split</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:]</span>
+<span class="n">test_trajectories</span> <span class="o">=</span> <span class="n">trajectories</span><span class="p">[</span><span class="n">traj_index</span><span class="p">[</span><span class="n">test_split</span><span class="p">:],</span> <span class="p">:,</span> <span class="p">:]</span>
 
-input_dim = train_trajectories.shape[2]
-output_dim = input_dim
-dltrain = DataLoader(
-    train_trajectories,
-    batch_size=batch_size,
-    shuffle=True,
-    collate_fn=lambda batch: basic_collate_fn(
-        batch,
-        t,
-        data_type=&quot;train&quot;,
-        extrap=extrapolate,
-    ),
-)
-dlval = DataLoader(
-    val_trajectories,
-    batch_size=batch_size,
-    shuffle=False,
-    collate_fn=lambda batch: basic_collate_fn(
-        batch,
-        t,
-        data_type=&quot;test&quot;,
-        extrap=extrapolate,
-    ),
-)
-dltest = DataLoader(
-    test_trajectories,
-    batch_size=batch_size,
-    shuffle=False,
-    collate_fn=lambda batch: basic_collate_fn(
-        batch,
-        t,
-        data_type=&quot;test&quot;,
-        extrap=extrapolate,
-    ),
-)
+<span class="n">input_dim</span> <span class="o">=</span> <span class="n">train_trajectories</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">output_dim</span> <span class="o">=</span> <span class="n">input_dim</span>
+<span class="n">dltrain</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+    <span class="n">train_trajectories</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">collate_fn</span><span class="o">=</span><span class="k">lambda</span> <span class="n">batch</span><span class="p">:</span> <span class="n">basic_collate_fn</span><span class="p">(</span>
+        <span class="n">batch</span><span class="p">,</span>
+        <span class="n">t</span><span class="p">,</span>
+        <span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
+        <span class="n">extrap</span><span class="o">=</span><span class="n">extrapolate</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">dlval</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+    <span class="n">val_trajectories</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">collate_fn</span><span class="o">=</span><span class="k">lambda</span> <span class="n">batch</span><span class="p">:</span> <span class="n">basic_collate_fn</span><span class="p">(</span>
+        <span class="n">batch</span><span class="p">,</span>
+        <span class="n">t</span><span class="p">,</span>
+        <span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
+        <span class="n">extrap</span><span class="o">=</span><span class="n">extrapolate</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+<span class="n">dltest</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+    <span class="n">test_trajectories</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">collate_fn</span><span class="o">=</span><span class="k">lambda</span> <span class="n">batch</span><span class="p">:</span> <span class="n">basic_collate_fn</span><span class="p">(</span>
+        <span class="n">batch</span><span class="p">,</span>
+        <span class="n">t</span><span class="p">,</span>
+        <span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
+        <span class="n">extrap</span><span class="o">=</span><span class="n">extrapolate</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -562,20 +562,20 @@ dltest = DataLoader(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>latent_dim = 2
-hidden_units = 64
-encode_obs_time = True
-s_recon_terms = 33
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">latent_dim</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">hidden_units</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">encode_obs_time</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">s_recon_terms</span> <span class="o">=</span> <span class="mi">33</span>
 
-encoder = ReverseGRUEncoder(
-    input_dim,
-    latent_dim,
-    hidden_units // 2,
-    encode_obs_time=encode_obs_time,
-).to(device)
-laplace_rep_func = LaplaceRepresentationFunc(
-    s_recon_terms, output_dim, latent_dim
-).to(device)
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">ReverseGRUEncoder</span><span class="p">(</span>
+    <span class="n">input_dim</span><span class="p">,</span>
+    <span class="n">latent_dim</span><span class="p">,</span>
+    <span class="n">hidden_units</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">encode_obs_time</span><span class="o">=</span><span class="n">encode_obs_time</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">laplace_rep_func</span> <span class="o">=</span> <span class="n">LaplaceRepresentationFunc</span><span class="p">(</span>
+    <span class="n">s_recon_terms</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">,</span> <span class="n">latent_dim</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -584,21 +584,21 @@ laplace_rep_func = LaplaceRepresentationFunc(
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from torchlaplace import laplace_reconstruct
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torchlaplace</span> <span class="kn">import</span> <span class="n">laplace_reconstruct</span>
 
-laplace_rep_func.eval(), encoder.eval()
-for batch in dlval:
-    trajs_to_encode = batch[
-        &quot;observed_data&quot;
-    ]  # (batch_size, t_observed_dim, observed_dim)
-    observed_tp = batch[&quot;observed_tp&quot;]  # (1, t_observed_dim)
-    p = encoder(
-        trajs_to_encode, observed_tp
-    )  # p is the latent tensor encoding the initial states
-    tp_to_predict = batch[&quot;tp_to_predict&quot;]
-    predictions = laplace_reconstruct(
-        laplace_rep_func, p, tp_to_predict, recon_dim=output_dim
-    )
+<span class="n">laplace_rep_func</span><span class="o">.</span><span class="n">eval</span><span class="p">(),</span> <span class="n">encoder</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dlval</span><span class="p">:</span>
+    <span class="n">trajs_to_encode</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span>
+        <span class="s2">&quot;observed_data&quot;</span>
+    <span class="p">]</span>  <span class="c1"># (batch_size, t_observed_dim, observed_dim)</span>
+    <span class="n">observed_tp</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;observed_tp&quot;</span><span class="p">]</span>  <span class="c1"># (1, t_observed_dim)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">encoder</span><span class="p">(</span>
+        <span class="n">trajs_to_encode</span><span class="p">,</span> <span class="n">observed_tp</span>
+    <span class="p">)</span>  <span class="c1"># p is the latent tensor encoding the initial states</span>
+    <span class="n">tp_to_predict</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;tp_to_predict&quot;</span><span class="p">]</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">laplace_reconstruct</span><span class="p">(</span>
+        <span class="n">laplace_rep_func</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">tp_to_predict</span><span class="p">,</span> <span class="n">recon_dim</span><span class="o">=</span><span class="n">output_dim</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -606,7 +606,7 @@ for batch in dlval:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>predictions.shape
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
@@ -626,115 +626,115 @@ torch.Size([100, 100, 1])
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from time import time
-from copy import deepcopy
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 
-learning_rate = 1e-3
-epochs = 1000
-patience = None
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">1e-3</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">patience</span> <span class="o">=</span> <span class="kc">None</span>
 
-if not patience:
-    patience = epochs
+<span class="k">if</span> <span class="ow">not</span> <span class="n">patience</span><span class="p">:</span>
+    <span class="n">patience</span> <span class="o">=</span> <span class="n">epochs</span>
 
-params = list(laplace_rep_func.parameters()) + list(encoder.parameters())
-optimizer = torch.optim.Adam(params, lr=learning_rate)
-loss_fn = torch.nn.MSELoss()
+<span class="n">params</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">laplace_rep_func</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">encoder</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+<span class="n">loss_fn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
 
-best_loss = float(&quot;inf&quot;)
-waiting = 0
+<span class="n">best_loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+<span class="n">waiting</span> <span class="o">=</span> <span class="mi">0</span>
 
-for epoch in range(epochs):
-    iteration = 0
-    epoch_train_loss_it_cum = 0
-    start_time = time()
-    laplace_rep_func.train(), encoder.train()
-    for batch in dltrain:
-        optimizer.zero_grad()
-        trajs_to_encode = batch[
-            &quot;observed_data&quot;
-        ]  # (batch_size, t_observed_dim, observed_dim)
-        observed_tp = batch[&quot;observed_tp&quot;]  # (1, t_observed_dim)
-        p = encoder(
-            trajs_to_encode, observed_tp
-        )  # p is the latent tensor encoding the initial states
-        tp_to_predict = batch[&quot;tp_to_predict&quot;]
-        predictions = laplace_reconstruct(
-            laplace_rep_func, p, tp_to_predict, recon_dim=output_dim
-        )
-        loss = loss_fn(
-            torch.flatten(predictions), torch.flatten(batch[&quot;data_to_predict&quot;])
-        )
-        loss.backward()
-        torch.nn.utils.clip_grad_norm_(params, 1)
-        optimizer.step()
-        epoch_train_loss_it_cum += loss.item()
-        iteration += 1
-    epoch_train_loss = epoch_train_loss_it_cum / iteration
-    epoch_duration = time() - start_time
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    <span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">epoch_train_loss_it_cum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+    <span class="n">laplace_rep_func</span><span class="o">.</span><span class="n">train</span><span class="p">(),</span> <span class="n">encoder</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dltrain</span><span class="p">:</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">trajs_to_encode</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span>
+            <span class="s2">&quot;observed_data&quot;</span>
+        <span class="p">]</span>  <span class="c1"># (batch_size, t_observed_dim, observed_dim)</span>
+        <span class="n">observed_tp</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;observed_tp&quot;</span><span class="p">]</span>  <span class="c1"># (1, t_observed_dim)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">encoder</span><span class="p">(</span>
+            <span class="n">trajs_to_encode</span><span class="p">,</span> <span class="n">observed_tp</span>
+        <span class="p">)</span>  <span class="c1"># p is the latent tensor encoding the initial states</span>
+        <span class="n">tp_to_predict</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;tp_to_predict&quot;</span><span class="p">]</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">laplace_reconstruct</span><span class="p">(</span>
+            <span class="n">laplace_rep_func</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">tp_to_predict</span><span class="p">,</span> <span class="n">recon_dim</span><span class="o">=</span><span class="n">output_dim</span>
+        <span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">predictions</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="s2">&quot;data_to_predict&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">epoch_train_loss_it_cum</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">epoch_train_loss</span> <span class="o">=</span> <span class="n">epoch_train_loss_it_cum</span> <span class="o">/</span> <span class="n">iteration</span>
+    <span class="n">epoch_duration</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 
-    # Validation step
-    laplace_rep_func.eval(), encoder.eval()
-    cum_val_loss = 0
-    cum_val_batches = 0
-    for batch in dlval:
-        trajs_to_encode = batch[
-            &quot;observed_data&quot;
-        ]  # (batch_size, t_observed_dim, observed_dim)
-        observed_tp = batch[&quot;observed_tp&quot;]  # (1, t_observed_dim)
-        p = encoder(
-            trajs_to_encode, observed_tp
-        )  # p is the latent tensor encoding the initial states
-        tp_to_predict = batch[&quot;tp_to_predict&quot;]
-        predictions = laplace_reconstruct(
-            laplace_rep_func, p, tp_to_predict, recon_dim=output_dim
-        )
-        cum_val_loss += loss_fn(
-            torch.flatten(predictions), torch.flatten(batch[&quot;data_to_predict&quot;])
-        ).item()
-        cum_val_batches += 1
-    val_mse = cum_val_loss / cum_val_batches
-    if epoch % 100 == 0:
-        print(
-            &quot;[epoch={}] epoch_duration={:.2f} | train_loss={}\t| val_mse={}\t|&quot;.format(
-                epoch, epoch_duration, epoch_train_loss, val_mse
-            )
-        )
+    <span class="c1"># Validation step</span>
+    <span class="n">laplace_rep_func</span><span class="o">.</span><span class="n">eval</span><span class="p">(),</span> <span class="n">encoder</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">cum_val_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">cum_val_batches</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dlval</span><span class="p">:</span>
+        <span class="n">trajs_to_encode</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span>
+            <span class="s2">&quot;observed_data&quot;</span>
+        <span class="p">]</span>  <span class="c1"># (batch_size, t_observed_dim, observed_dim)</span>
+        <span class="n">observed_tp</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;observed_tp&quot;</span><span class="p">]</span>  <span class="c1"># (1, t_observed_dim)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">encoder</span><span class="p">(</span>
+            <span class="n">trajs_to_encode</span><span class="p">,</span> <span class="n">observed_tp</span>
+        <span class="p">)</span>  <span class="c1"># p is the latent tensor encoding the initial states</span>
+        <span class="n">tp_to_predict</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;tp_to_predict&quot;</span><span class="p">]</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">laplace_reconstruct</span><span class="p">(</span>
+            <span class="n">laplace_rep_func</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">tp_to_predict</span><span class="p">,</span> <span class="n">recon_dim</span><span class="o">=</span><span class="n">output_dim</span>
+        <span class="p">)</span>
+        <span class="n">cum_val_loss</span> <span class="o">+=</span> <span class="n">loss_fn</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">predictions</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="s2">&quot;data_to_predict&quot;</span><span class="p">])</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">cum_val_batches</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">val_mse</span> <span class="o">=</span> <span class="n">cum_val_loss</span> <span class="o">/</span> <span class="n">cum_val_batches</span>
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;[epoch=</span><span class="si">{}</span><span class="s2">] epoch_duration=</span><span class="si">{:.2f}</span><span class="s2"> | train_loss=</span><span class="si">{}</span><span class="se">\t</span><span class="s2">| val_mse=</span><span class="si">{}</span><span class="se">\t</span><span class="s2">|&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">epoch</span><span class="p">,</span> <span class="n">epoch_duration</span><span class="p">,</span> <span class="n">epoch_train_loss</span><span class="p">,</span> <span class="n">val_mse</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
-    # Early stopping procedure
-    if val_mse &lt; best_loss:
-        best_loss = val_mse
-        best_laplace_rep_func = deepcopy(laplace_rep_func.state_dict())
-        best_encoder = deepcopy(encoder.state_dict())
-        waiting = 0
-    elif waiting &gt; patience:
-        break
-    else:
-        waiting += 1
+    <span class="c1"># Early stopping procedure</span>
+    <span class="k">if</span> <span class="n">val_mse</span> <span class="o">&lt;</span> <span class="n">best_loss</span><span class="p">:</span>
+        <span class="n">best_loss</span> <span class="o">=</span> <span class="n">val_mse</span>
+        <span class="n">best_laplace_rep_func</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">laplace_rep_func</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+        <span class="n">best_encoder</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">encoder</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+        <span class="n">waiting</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">waiting</span> <span class="o">&gt;</span> <span class="n">patience</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">waiting</span> <span class="o">+=</span> <span class="mi">1</span>
 
-# Load best model
-laplace_rep_func.load_state_dict(best_laplace_rep_func)
-encoder.load_state_dict(best_encoder)
+<span class="c1"># Load best model</span>
+<span class="n">laplace_rep_func</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">best_laplace_rep_func</span><span class="p">)</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">best_encoder</span><span class="p">)</span>
 
-# Test step
-laplace_rep_func.eval(), encoder.eval()
-cum_test_loss = 0
-cum_test_batches = 0
-for batch in dltest:
-    trajs_to_encode = batch[
-        &quot;observed_data&quot;
-    ]  # (batch_size, t_observed_dim, observed_dim)
-    observed_tp = batch[&quot;observed_tp&quot;]  # (1, t_observed_dim)
-    p = encoder(
-        trajs_to_encode, observed_tp
-    )  # p is the latent tensor encoding the initial states
-    tp_to_predict = batch[&quot;tp_to_predict&quot;]
-    predictions = laplace_reconstruct(laplace_rep_func, p, tp_to_predict)
-    cum_test_loss += loss_fn(
-        torch.flatten(predictions), torch.flatten(batch[&quot;data_to_predict&quot;])
-    ).item()
-    cum_test_batches += 1
-test_mse = cum_test_loss / cum_test_batches
-print(f&quot;test_mse= {test_mse}&quot;)
+<span class="c1"># Test step</span>
+<span class="n">laplace_rep_func</span><span class="o">.</span><span class="n">eval</span><span class="p">(),</span> <span class="n">encoder</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="n">cum_test_loss</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">cum_test_batches</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dltest</span><span class="p">:</span>
+    <span class="n">trajs_to_encode</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span>
+        <span class="s2">&quot;observed_data&quot;</span>
+    <span class="p">]</span>  <span class="c1"># (batch_size, t_observed_dim, observed_dim)</span>
+    <span class="n">observed_tp</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;observed_tp&quot;</span><span class="p">]</span>  <span class="c1"># (1, t_observed_dim)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">encoder</span><span class="p">(</span>
+        <span class="n">trajs_to_encode</span><span class="p">,</span> <span class="n">observed_tp</span>
+    <span class="p">)</span>  <span class="c1"># p is the latent tensor encoding the initial states</span>
+    <span class="n">tp_to_predict</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="s2">&quot;tp_to_predict&quot;</span><span class="p">]</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">laplace_reconstruct</span><span class="p">(</span><span class="n">laplace_rep_func</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">tp_to_predict</span><span class="p">)</span>
+    <span class="n">cum_test_loss</span> <span class="o">+=</span> <span class="n">loss_fn</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">predictions</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="s2">&quot;data_to_predict&quot;</span><span class="p">])</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="n">cum_test_batches</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">test_mse</span> <span class="o">=</span> <span class="n">cum_test_loss</span> <span class="o">/</span> <span class="n">cum_test_batches</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;test_mse= </span><span class="si">{</span><span class="n">test_mse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -771,7 +771,7 @@ test_mse= 0.05796055868268013
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Sam Holt.</p>
+    <p>&#169; Copyright 2023, Sam Holt.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

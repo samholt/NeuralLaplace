@@ -4,11 +4,11 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API &mdash; TorchLaplace 0.0.2 documentation</title>
+  <title>API &mdash; TorchLaplace 0.0.4 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css" type="text/css" />
       <link rel="stylesheet" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" type="text/css" />
+      <link rel="stylesheet" href="_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css" type="text/css" />
       <link rel="stylesheet" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" type="text/css" />
       <link rel="stylesheet" href="_static/torchlaplace.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -37,7 +37,7 @@
             <a href="index.html" class="icon icon-home"> TorchLaplace
           </a>
               <div class="version">
-                0.0.2
+                0.0.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -144,7 +144,7 @@
 <h3>laplace_reconstruct<a class="headerlink" href="#laplace-reconstruct" title="Permalink to this headline"></a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="torchlaplace.laplace_reconstruct">
-<span class="sig-prename descclassname"><span class="pre">torchlaplace.</span></span><span class="sig-name descname"><span class="pre">laplace_reconstruct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">laplace_rep_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recon_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ilt_algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fourier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sphere_projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ilt_reconstruction_terms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">33</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#torchlaplace.laplace_reconstruct" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">torchlaplace.</span></span><span class="sig-name descname"><span class="pre">laplace_reconstruct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">laplace_rep_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recon_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ilt_algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fourier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sphere_projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ilt_reconstruction_terms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">33</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_deriv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#torchlaplace.laplace_reconstruct" title="Permalink to this definition"></a></dt>
 <dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for a system of Laplace representations.</p>
 <p>Given a parameterized Laplace representation functional <span class="math notranslate nohighlight">\(\mathbf{F}(\mathbf{p},\mathbf{s})\)</span>,</p>
 <div class="math notranslate nohighlight">
@@ -451,6 +451,27 @@ points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of r
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.Fourier.line_integrate_all_multi_batch_time">
+<span class="sig-name descname"><span class="pre">line_integrate_all_multi_batch_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.Fourier.line_integrate_all_multi_batch_time" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm (takes batch input of <cite>fp</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>to set T =</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen})\)</span>.</p></li>
+<li><p><strong>T</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for used as the reconstruction of times up to <cite>T</cite> time point of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>. Best practice for most ILT algorithms is</p></li>
+<li><p><strong>ti</strong> – </p></li>
+<li><p><strong>T.</strong> (<em>for the ILT algorithms that rely on</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time
+points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="torchlaplace.inverse_laplace.Fourier.line_integrate_multi">
 <span class="sig-name descname"><span class="pre">line_integrate_multi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.Fourier.line_integrate_multi" title="Permalink to this definition"></a></dt>
 <dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm.</p>
@@ -634,10 +655,8 @@ Given a parameterized Laplace representation function <span class="math notransl
 and makes the Bromwich contour integral rapidly converge as <span class="math notranslate nohighlight">\(\mathbf{s} \to -\infty\)</span> causes <span class="math notranslate nohighlight">\(e^{\mathbf{s}t} \to 0\)</span> in ILT Equation.
 We implemented the Fixed Tablot method, which is simple to implement.
 However it suffers from not being able to model solutions that have large sinusoidal components and instead is optimized for modelling decaying exponential solutions.
-We note that whilst it can approximate some small sinusoidal components, for an adaptive time contour, the sinusoidal components that can be represented decrease when</p>
-<blockquote>
-<div><p>modelling longer time trajectories, and in the limit for long time horizons, allow only representations of decaying exponentials.</p>
-</div></blockquote>
+We note that whilst it can approximate some small sinusoidal components, for an adaptive time contour, the sinusoidal components that can be represented decrease when
+modelling longer time trajectories, and in the limit for long time horizons, allow only representations of decaying exponentials.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>References: Abate, J. and Valko, P. P. Multi-precision laplace transform inversion. International Journal for Numerical Methods in Engineering, 60:979–993, 2004.</p>
@@ -909,6 +928,27 @@ points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of r
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="torchlaplace.inverse_laplace.CME.line_integrate_all_multi_batch_time">
+<span class="sig-name descname"><span class="pre">line_integrate_all_multi_batch_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#torchlaplace.inverse_laplace.CME.line_integrate_all_multi_batch_time" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct trajectories <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> for <cite>fp</cite>, Laplace representations evaluated at <cite>s</cite> points from the input <cite>ti</cite> points, <span class="math notranslate nohighlight">\(t\)</span>, using the selected ILT algorithm (takes batch input of <cite>fp</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp</strong> (<em>Tensor</em>) – Laplace representation evaluated at <cite>s</cite> points derived from the input time points <cite>ti</cite>. <cite>fp</cite> has shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen}, d_{\text{obs}}, \text{ReconTerms})\)</span></p></li>
+<li><p><strong>ti</strong> (<em>to set T =</em>) – time points to reconstruct trajectory for of shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen})\)</span>.</p></li>
+<li><p><strong>T</strong> (<em>Tensor</em>) – time points to reconstruct trajectory for used as the reconstruction of times up to <cite>T</cite> time point of shape <span class="math notranslate nohighlight">\((\text{SeqLen})\)</span>. Best practice for most ILT algorithms is</p></li>
+<li><p><strong>ti</strong> – </p></li>
+<li><p><strong>T.</strong> (<em>for the ILT algorithms that rely on</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Tensor of reconstructions <span class="math notranslate nohighlight">\(\mathbf{x}(t)\)</span> of shape <span class="math notranslate nohighlight">\((\text{BatchSize}, \text{SeqLen}, d_{\text{obs}})\)</span>. <span class="math notranslate nohighlight">\(\text{SeqLen}\)</span> dimension corresponds to the different time
+points <span class="math notranslate nohighlight">\(t\)</span>. This tensor of reconstructions contains the solved value of <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> for each desired time point in <cite>t</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -1050,7 +1090,7 @@ I.e. we can translate any complex number <span class="math notranslate nohighlig
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Sam Holt.</p>
+    <p>&#169; Copyright 2023, Sam Holt.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
