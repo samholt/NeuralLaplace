@@ -10,9 +10,9 @@ Core Functions
 
 
    .. autosummary::
-   
+
       laplace_reconstruct
-   
+
 laplace_reconstruct
 ^^^^^^^^^^^^^^^^^^^^
 .. autofunction:: torchlaplace.laplace_reconstruct
@@ -70,7 +70,7 @@ Transformation Functions
 
 
    .. autosummary::
-   
+
       complex_to_spherical_riemann
       spherical_riemann_to_complex
       spherical_to_complex
@@ -91,4 +91,3 @@ spherical_to_complex
 complex_to_spherical
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. autofunction:: torchlaplace.transformations.complex_to_spherical
-   

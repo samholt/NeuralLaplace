@@ -1,6 +1,9 @@
 name: Sphinx build
 
-on: push
+on:
+  push:
+    branches: [main, release]
+
 
 jobs:
   build:
@@ -10,7 +13,7 @@ jobs:
     - name: Build HTML
       uses: ammaraskar/sphinx-action@0.4
       with:
-        pre-build-command: "apt-get update -y && apt-get install -y pandoc"
+        pre-build-command: "apt-get update -y && apt-get install -y pandoc gcc"
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
