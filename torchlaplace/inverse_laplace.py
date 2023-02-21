@@ -10,10 +10,7 @@ import torch
 from scipy.special import factorial
 from torch import nn
 
-try:
-    from ._iltcme import cme_params_factory
-except ImportError:
-    from _iltcme import cme_params_factory  # For when running this single file as main
+from torchlaplace._iltcme import cme_params_factory
 
 EPS = sys.float_info.epsilon
 TORCH_FLOAT_DATATYPE = torch.float32

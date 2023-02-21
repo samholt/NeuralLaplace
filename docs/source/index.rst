@@ -101,7 +101,7 @@ References
 For usage for DE representations in the Laplace domain and leveraging the stereographic projection and other applications see:
 
 [1] Samuel Holt, Zhaozhi Qian, and Mihaela van der Schaar. "Neural laplace: Learning diverse classes of
-differential equations in the laplace domain." *International Conference on Machine Learning.* 2022. `arxiv <https://arxiv.org/abs/2206.04843>`__ 
+differential equations in the laplace domain." *International Conference on Machine Learning.* 2022. `arxiv <https://arxiv.org/abs/2206.04843>`__
 
 ---
 

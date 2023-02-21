@@ -1,8 +1,9 @@
 import torch
-import numpy as np
-from torchlaplace.inverse_laplace import FixedTablot, Stehfest, Fourier, DeHoog, CME
+
+from torchlaplace.inverse_laplace import CME, DeHoog, FixedTablot, Fourier, Stehfest
 
 device = torch.device("cuda:" + str(0) if torch.cuda.is_available() else "cpu")
+
 
 def test_all_ilts():
     s_recon_terms = 33
@@ -20,82 +21,68 @@ def test_all_ilts():
     # Evaluate s points per time input (Default, as more accurate inversion)
 
     decoder = FixedTablot(ilt_reconstruction_terms=s_recon_terms).to(device)
-    f_hat_t = decoder(fs, t)
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder(fs, t)
 
     # Split evaluation of s points out from that of the line integral (should be the exact same result as above)
     decoder = FixedTablot(ilt_reconstruction_terms=s_recon_terms).to(device)
     s, _ = decoder.compute_s(t)
     fh = fs(s)
-    f_hat_t = decoder.line_integrate(fh, t)
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder.line_integrate(fh, t)
 
     decoder = FixedTablot(ilt_reconstruction_terms=s_recon_terms).to(device)
     s, _ = decoder.compute_s(t, time_max=torch.max(t))
     fh = fs(s)
-    f_hat_t = decoder.line_integrate(fh, t, time_max=t.max().item())
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder.line_integrate(fh, t, time_max=t.max().item())
 
     # Evaluate s points for one fixed time, maximum time (Less accurate, maybe more stable ?)
 
     decoder = FixedTablot(ilt_reconstruction_terms=s_recon_terms).to(device)
-    f_hat_t = decoder(fs, t, time_max=torch.max(t))
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder(fs, t, time_max=torch.max(t))
 
     # Stehfest - Increasing degree here, introduces numerical error that increases larger than other methods, therefore for high degree becomes unstable
 
     decoder = Stehfest(ilt_reconstruction_terms=s_recon_terms).to(device)
-    f_hat_t = decoder(fs, t)
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder(fs, t)
 
     decoder = Stehfest(ilt_reconstruction_terms=s_recon_terms).to(device)
     s = decoder.compute_s(t)
     fh = fs(s)
-    f_hat_t = decoder.line_integrate(fh, t)
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder.line_integrate(fh, t)
 
     # Fourier (Un accelerated DeHoog)
     decoder = Fourier(ilt_reconstruction_terms=s_recon_terms).to(device)
-    f_hat_t = decoder(fs, t)
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder(fs, t)
 
     decoder = Fourier(ilt_reconstruction_terms=s_recon_terms).to(device)
     s, T = decoder.compute_s(t)
     fh = fs(s)
-    f_hat_t = decoder.line_integrate(fh, t, T)
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder.line_integrate(fh, t, T)
 
     # DeHoog
 
     decoder = DeHoog(ilt_reconstruction_terms=s_recon_terms).to(device)
-    f_hat_t = decoder(fs, t)
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder(fs, t)
 
     # Split evaluation of s points out from that of the line integral (should be the exact same result as above)
     decoder = DeHoog(ilt_reconstruction_terms=s_recon_terms).to(device)
     s, T = decoder.compute_s(t)
     fh = fs(s)
-    f_hat_t = decoder.line_integrate(fh, t, T)
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder.line_integrate(fh, t, T)
 
     # Single line integral
     decoder = DeHoog(ilt_reconstruction_terms=s_recon_terms).to(device)
     s = decoder.compute_fixed_s(torch.max(t))
     fh = fs(s)
-    f_hat_t = decoder.fixed_line_integrate(fh, t, torch.max(t))
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder.fixed_line_integrate(fh, t, torch.max(t))
 
     decoder = DeHoog(ilt_reconstruction_terms=s_recon_terms).to(device)
-    f_hat_t = decoder(fs, t, time_max=torch.max(t))
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder(fs, t, time_max=torch.max(t))
 
     # CME
     decoder = CME(ilt_reconstruction_terms=s_recon_terms).to(device)
-    f_hat_t = decoder(fs, t)
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder(fs, t)
 
     decoder = CME(ilt_reconstruction_terms=s_recon_terms).to(device)
     s, T = decoder.compute_s(t)
     fh = fs(s)
-    f_hat_t = decoder.line_integrate(fh, T)
-    loss = np.sqrt(torch.nn.MSELoss()(ft(t), f_hat_t).cpu().numpy())
+    decoder.line_integrate(fh, T)

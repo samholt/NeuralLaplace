@@ -6,8 +6,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
   schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '0 0 * * 0'
+    - cron:  '3 4 * * 6'
 
 jobs:
   Linter:
@@ -44,6 +43,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+      - uses: gautamkrishnar/keepalive-workflow@v1
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:

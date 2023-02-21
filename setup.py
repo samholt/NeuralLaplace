@@ -1,9 +1,12 @@
-from setuptools import setup
 import os
 import re
 
+from setuptools import setup
+
+
 def read(fname: str) -> str:
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
 
 def find_version() -> str:
     version_file = read("torchlaplace/version.py")
