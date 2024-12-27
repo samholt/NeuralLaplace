@@ -1,3 +1,7 @@
+.pytype
+*.benchmarks
+*.vscode
+*.ruff_cache
 *.dir
 *.dat
 *.bak

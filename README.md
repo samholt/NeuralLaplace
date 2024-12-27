@@ -120,4 +120,3 @@ If you found this library useful in your research, please consider citing.
 
 ## Projects (Papers) that use Neural Laplace 📝
 * 💻 [Neural Laplace Control](https://github.com/samholt/NeuralLaplaceControl): Neural Laplace Control for Continuous-time Delayed Systems - an offline RL method combining Neural Laplace dynamics model and MPC planner to achieve near-expert policy performance in environments with irregular time intervals and an unknown constant delay.
-

@@ -1,3 +1,5 @@
+# pytype: skip-file
+"""Sphinx configuration."""
 # Configuration file for the Sphinx documentation builder.
 
 # -- Project information
@@ -7,14 +9,16 @@ import sys
 
 sys.path.insert(0, os.path.abspath("../../"))
 
-from torchlaplace import __version__
+from torchlaplace import (  # pylint: disable=wrong-import-position # noqa: E402
+    __version__,
+)
 
 now = datetime.datetime.now()
 
 
 project = "TorchLaplace"
 author = "Sam Holt"
-copyright = f"{now.year}, {author}"
+copyright = f"{now.year}, {author}" # pylint: disable=redefined-builtin
 
 version = __version__
 release = version
