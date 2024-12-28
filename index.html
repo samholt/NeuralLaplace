@@ -1,25 +1,27 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TorchLaplace’s documentation &mdash; TorchLaplace 0.0.4 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" type="text/css" />
-      <link rel="stylesheet" href="_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css" type="text/css" />
-      <link rel="stylesheet" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" type="text/css" />
-      <link rel="stylesheet" href="_static/torchlaplace.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx-dropdown.css?v=995e94df" />
+      <link rel="stylesheet" type="text/css" href="_static/panels-bootstrap.min.css?v=21c0b90a" />
+      <link rel="stylesheet" type="text/css" href="_static/torchlaplace.css?v=3303761e" />
+
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8c5712d9"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -31,14 +33,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="#" class="icon icon-home"> TorchLaplace
+
+          
+          
+          <a href="#" class="icon icon-home">
+            TorchLaplace
           </a>
-              <div class="version">
-                0.0.4
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -65,8 +68,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li>TorchLaplace’s documentation</li>
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">TorchLaplace’s documentation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -76,32 +79,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="torchlaplace-s-documentation">
-<h1>TorchLaplace’s documentation<a class="headerlink" href="#torchlaplace-s-documentation" title="Permalink to this headline"></a></h1>
+  <section id="torchlaplace-s-documentation">
+<h1>TorchLaplace’s documentation<a class="headerlink" href="#torchlaplace-s-documentation" title="Link to this heading"></a></h1>
 <p><strong>TorchLaplace</strong> is open-source software for differentiable Laplace Reconstructions for modelling any time observation with O(1) complexity.
 This library provides Inverse Laplace Transform (ILT) algorithms implemented in PyTorch.
 Backpropagation through differential equation (DE) solutions in the Laplace domain is supported using the Riemann stereographic projection for better global representation of the complex Laplace domain.
@@ -177,7 +156,7 @@ you through the process of improving TorchLaplace.</p>
 </div>
 </div>
 <section id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline"></a></h2>
+<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a><ul>
@@ -211,23 +190,96 @@ you through the process of improving TorchLaplace.</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api.html#module-torchlaplace">Core Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api.html#laplace-reconstruct">laplace_reconstruct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#laplace-reconstruct">laplace_reconstruct</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#torchlaplace.laplace_reconstruct"><code class="docutils literal notranslate"><span class="pre">laplace_reconstruct()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#inverse-laplace-transform-algorithms">Inverse Laplace transform algorithms</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api.html#inverselaplacetransformalgorithmbase">InverseLaplaceTransformAlgorithmBase</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#fourier">Fourier</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#dehoog">DeHoog</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#fixedtablot">FixedTablot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#stehfest">Stehfest</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#cme">CME</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#inverselaplacetransformalgorithmbase">InverseLaplaceTransformAlgorithmBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase"><code class="docutils literal notranslate"><span class="pre">InverseLaplaceTransformAlgorithmBase</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase.compute_s"><code class="docutils literal notranslate"><span class="pre">InverseLaplaceTransformAlgorithmBase.compute_s()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase.forward"><code class="docutils literal notranslate"><span class="pre">InverseLaplaceTransformAlgorithmBase.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase.line_integrate"><code class="docutils literal notranslate"><span class="pre">InverseLaplaceTransformAlgorithmBase.line_integrate()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.InverseLaplaceTransformAlgorithmBase.line_integrate_all_multi"><code class="docutils literal notranslate"><span class="pre">InverseLaplaceTransformAlgorithmBase.line_integrate_all_multi()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#fourier">Fourier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.Fourier"><code class="docutils literal notranslate"><span class="pre">Fourier</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.Fourier.compute_s"><code class="docutils literal notranslate"><span class="pre">Fourier.compute_s()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.Fourier.forward"><code class="docutils literal notranslate"><span class="pre">Fourier.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.Fourier.line_integrate"><code class="docutils literal notranslate"><span class="pre">Fourier.line_integrate()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.Fourier.line_integrate_all_multi"><code class="docutils literal notranslate"><span class="pre">Fourier.line_integrate_all_multi()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.Fourier.line_integrate_all_multi_batch_time"><code class="docutils literal notranslate"><span class="pre">Fourier.line_integrate_all_multi_batch_time()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.Fourier.line_integrate_multi"><code class="docutils literal notranslate"><span class="pre">Fourier.line_integrate_multi()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#dehoog">DeHoog</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.DeHoog"><code class="docutils literal notranslate"><span class="pre">DeHoog</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.DeHoog.compute_fixed_s"><code class="docutils literal notranslate"><span class="pre">DeHoog.compute_fixed_s()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.DeHoog.compute_s"><code class="docutils literal notranslate"><span class="pre">DeHoog.compute_s()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.DeHoog.fixed_line_integrate"><code class="docutils literal notranslate"><span class="pre">DeHoog.fixed_line_integrate()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.DeHoog.forward"><code class="docutils literal notranslate"><span class="pre">DeHoog.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.DeHoog.line_integrate"><code class="docutils literal notranslate"><span class="pre">DeHoog.line_integrate()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.DeHoog.line_integrate_all_multi"><code class="docutils literal notranslate"><span class="pre">DeHoog.line_integrate_all_multi()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#fixedtablot">FixedTablot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.FixedTablot"><code class="docutils literal notranslate"><span class="pre">FixedTablot</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.FixedTablot.compute_s"><code class="docutils literal notranslate"><span class="pre">FixedTablot.compute_s()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.FixedTablot.forward"><code class="docutils literal notranslate"><span class="pre">FixedTablot.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.FixedTablot.line_integrate"><code class="docutils literal notranslate"><span class="pre">FixedTablot.line_integrate()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.FixedTablot.line_integrate_multi"><code class="docutils literal notranslate"><span class="pre">FixedTablot.line_integrate_multi()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#stehfest">Stehfest</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.Stehfest"><code class="docutils literal notranslate"><span class="pre">Stehfest</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.Stehfest.compute_s"><code class="docutils literal notranslate"><span class="pre">Stehfest.compute_s()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.Stehfest.forward"><code class="docutils literal notranslate"><span class="pre">Stehfest.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.Stehfest.line_integrate"><code class="docutils literal notranslate"><span class="pre">Stehfest.line_integrate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#cme">CME</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.CME"><code class="docutils literal notranslate"><span class="pre">CME</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.CME.compute_s"><code class="docutils literal notranslate"><span class="pre">CME.compute_s()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.CME.forward"><code class="docutils literal notranslate"><span class="pre">CME.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.CME.line_integrate"><code class="docutils literal notranslate"><span class="pre">CME.line_integrate()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.CME.line_integrate_all_multi"><code class="docutils literal notranslate"><span class="pre">CME.line_integrate_all_multi()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="api.html#torchlaplace.inverse_laplace.CME.line_integrate_all_multi_batch_time"><code class="docutils literal notranslate"><span class="pre">CME.line_integrate_all_multi_batch_time()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#module-torchlaplace.transformations">Transformation Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api.html#complex-to-spherical-riemann">complex_to_spherical_riemann</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#spherical-riemann-to-complex">spherical_riemann_to_complex</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#spherical-to-complex">spherical_to_complex</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api.html#complex-to-spherical">complex_to_spherical</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#complex-to-spherical-riemann">complex_to_spherical_riemann</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#torchlaplace.transformations.complex_to_spherical_riemann"><code class="docutils literal notranslate"><span class="pre">complex_to_spherical_riemann()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#spherical-riemann-to-complex">spherical_riemann_to_complex</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#torchlaplace.transformations.spherical_riemann_to_complex"><code class="docutils literal notranslate"><span class="pre">spherical_riemann_to_complex()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#spherical-to-complex">spherical_to_complex</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#torchlaplace.transformations.spherical_to_complex"><code class="docutils literal notranslate"><span class="pre">spherical_to_complex()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#complex-to-spherical">complex_to_spherical</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#torchlaplace.transformations.complex_to_spherical"><code class="docutils literal notranslate"><span class="pre">complex_to_spherical()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -237,7 +289,7 @@ you through the process of improving TorchLaplace.</p>
 </div>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
 <p>For usage for DE representations in the Laplace domain and leveraging the stereographic projection and other applications see:</p>
 <p>[1] Samuel Holt, Zhaozhi Qian, and Mihaela van der Schaar. “Neural laplace: Learning diverse classes of
 differential equations in the laplace domain.” <em>International Conference on Machine Learning.</em> 2022. <a class="reference external" href="https://arxiv.org/abs/2206.04843">arxiv</a></p>
@@ -266,7 +318,7 @@ differential equations in the laplace domain.” <em>International Conference on
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, Sam Holt.</p>
+    <p>&#169; Copyright 2024, Sam Holt.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
