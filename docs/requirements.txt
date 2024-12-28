@@ -1,6 +1,7 @@
 furo
 ipykernel
 nbsphinx
+pandoc
 sphinx-panels
 sphinx-rtd-theme
 torchlaplace
