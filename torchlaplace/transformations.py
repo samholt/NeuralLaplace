@@ -4,15 +4,15 @@ This module provides functions to transform between spherical Riemann
 
 Functions:
 - spherical_riemann_to_complex: Converts spherical Riemann stereographic
-  projection coordinates to complex number coordinates.
+projection coordinates to complex number coordinates.
 - complex_to_spherical_riemann: Converts complex number coordinates to
-  spherical Riemann stereographic projection coordinates.
+spherical Riemann stereographic projection coordinates.
 - spherical_to_complex: Converts spherical Riemann stereographic projection
-  coordinates to complex number coordinates, maintaining the shape of the input
-  tensor.
+coordinates to complex number coordinates, maintaining the shape of the input
+tensor.
 - complex_to_spherical: Converts complex number coordinates to spherical
-  Riemann stereographic projection coordinates, maintaining the shape of the
-  input tensor.
+Riemann stereographic projection coordinates, maintaining the shape of the
+input tensor.
 
 The transformations are based on the mathematical mappings between the Riemann
   sphere and the complex plane.

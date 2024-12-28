@@ -30,12 +30,6 @@ Usage:
   different numerical algorithms. Each class provides methods to compute the
   ILT and evaluate the Laplace representation at specific points.
 
-Example:
-  ```
-  decoder = FixedTablot(ilt_reconstruction_terms=33).to(device)
-  print(f"FixedTablot Loss: {np.sqrt(torch.nn.MSELoss()(ft(t),
-    f_hat_t).cpu().numpy())}")
-  ```
 """
 ###########################
 # Neural Laplace: Learning diverse classes of differential equations in the

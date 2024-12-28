@@ -1,6 +1,6 @@
-furo==2021.11.16
+furo
 ipykernel
-nbsphinx==0.8.9
-sphinx-panels==0.6.0
-sphinx-rtd-theme==1.0.0
+nbsphinx
+sphinx-panels
+sphinx-rtd-theme
 torchlaplace
